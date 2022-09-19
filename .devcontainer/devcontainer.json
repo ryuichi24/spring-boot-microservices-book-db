@@ -1,0 +1,30 @@
+{
+  "name": "workspace",
+  "dockerComposeFile": ["docker-compose.yml"],
+  "service": "workspace",
+  "workspaceFolder": "/home/vscode/workspace",
+  "remoteUser": "vscode",
+  "shutdownAction": "stopCompose",
+  "settings": {
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/.docker": true
+    },
+    "thunder-client.saveToWorkspace": true,
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "git.mergeEditor": false
+  },
+  "extensions": [
+    // Util
+    "esbenp.prettier-vscode",
+    "rangav.vscode-thunder-client",
+    "streetsidesoftware.code-spell-checker",
+    "fosshaas.fontsize-shortcuts",
+    // java
+    "vscjava.vscode-java-pack",
+    "vscjava.vscode-spring-initializr",
+    "vscjava.vscode-gradle",
+    // database
+    "mtxr.sqltools"
+  ]
+}
