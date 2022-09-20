@@ -1,0 +1,15 @@
+spring: 
+  jpa:
+    hibernate:
+      ddl-auto: none
+      show-sql: true
+    properties:
+      hibernate:
+        hbm2dll:
+          create_namespaces: true
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST:mysql}:${DB_PORT:3306}/${DB_NAME:dev}
+    username: ${DB_USER:mysql}
+    password: ${DB_PASSWORD:thisIsReallyStrongPassword123}
+    driver-class-name: org.mysql.Driver
