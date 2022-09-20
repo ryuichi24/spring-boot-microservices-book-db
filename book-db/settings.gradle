@@ -1,5 +1,5 @@
 rootProject.name = 'book-db'
-include('author-api')
-include('book-api')
-include('comment-api')
-include('shared')
+include("author-api")
+include("book-api")
+include("comment-api")
+include("shared")

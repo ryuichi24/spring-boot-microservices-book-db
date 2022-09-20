@@ -1,0 +1,83 @@
+// https://tech.excite.co.jp/entry/2021/12/01/120000
+
+plugins {
+	id 'org.springframework.boot' version '2.7.3'
+	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+	id 'java'
+}
+
+subprojects {
+    apply plugin: "org.springframework.boot"
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: "java"
+
+    group = 'com.juniordevmind'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '18'
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    tasks.named('test') {
+	    useJUnitPlatform()
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-amqp:2.7.3'
+        implementation 'org.springframework.boot:spring-boot-starter-web:2.7.3'
+        developmentOnly 'org.springframework.boot:spring-boot-devtools:2.7.3'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.3'
+        compileOnly 'org.projectlombok:lombok:1.18.24'
+        annotationProcessor 'org.projectlombok:lombok:1.18.24'
+        testImplementation 'org.springframework.amqp:spring-rabbit-test:2.4.6'
+        implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+    }
+}
+
+
+project(":author-api") {
+    bootJar {
+        enabled = true
+    }
+
+    dependencies {
+        implementation project(':shared')
+    }
+}
+
+project(":book-api") {
+    bootJar {
+        enabled = true
+    }
+
+    dependencies {
+        implementation project(':shared')
+    }
+}
+
+project(":comment-api") {
+    bootJar {
+        enabled = true
+    }
+
+    dependencies {
+        implementation project(':shared')
+    }
+}
+
+project(":shared") {
+    bootJar {
+        enabled = false
+    }
+
+    dependencies {
+        
+    }
+}
