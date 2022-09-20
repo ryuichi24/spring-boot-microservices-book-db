@@ -1,0 +1,108 @@
+version: "3.9"
+
+services:
+  author-service:
+    build:
+      context: ./
+      dockerfile: ./author-api/Dockerfile
+    container_name: ${PROJECT_NAME:-default}-author-service-container
+    ports:
+      - 80
+    environment:
+      PORT: 80
+    depends_on:
+      - mysql
+    networks:
+      - internal
+      - external
+
+  book-service:
+    build:
+      context: ./
+      dockerfile: ./book-api/Dockerfile
+    container_name: ${PROJECT_NAME:-default}-book-service-container
+    ports:
+      - 80
+    environment:
+      PORT: 80
+    depends_on:
+      - mysql
+    networks:
+      - internal
+      - external
+
+  comment-service:
+    build:
+      context: ./
+      dockerfile: ./comment-api/Dockerfile
+    container_name: ${PROJECT_NAME:-default}-comment-service-container
+    ports:
+      - 80
+    environment:
+      PORT: 80
+    depends_on:
+      - mysql
+    networks:
+      - internal
+      - external
+
+  mysql:
+    container_name: ${PROJECT_NAME:-default}-mysql-container
+    restart: always
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - ${DB_PORT:-3306}:3306
+    volumes:
+      # - ./docker/mysql/init-tables.sql:/docker-entrypoint-initdb.d/init-tables.sql
+      - ./.docker/mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
+      MYSQL_DATABASE: ${DB_DATABASE:-dev}
+      MYSQL_USER: ${DB_USER:-mysql}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
+    networks:
+      - internal
+      - external
+
+  rabbitMQ:
+    image: rabbitmq:3.9.13-management-alpine
+    container_name: ${PROJECT_NAME:-default}-rabbitMQ-container
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./.docker/rabbitmqdata:/var/lib/rabbitmq
+      - ./.docker/rabbitmqlog:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME:-rabbitmq}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-rabbitmq}
+    hostname: rabbitmq
+    networks:
+      - internal
+      - external
+
+  nginx:
+    build:
+      context: ./api-gateway
+    container_name: ${PROJECT_NAME:-default}-nginx-container
+    ports:
+      - 3333:80
+    volumes:
+      - ./api-gateway/conf.d:/etc/nginx/conf.d
+    networks:
+      - internal
+      - external
+    depends_on:
+      - author-service
+      - book-service
+      - comment-service
+
+# https://www.timedia.co.jp/tech/20220628-tech/
+networks:
+  internal:
+    driver: bridge
+    internal: true
+  external:
+    driver: bridge
+    internal: false

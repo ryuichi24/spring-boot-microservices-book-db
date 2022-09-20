@@ -1,5 +1,5 @@
 server:
-  port: 6060
+  port: ${PORT:6060}
 
 logging:
   level:

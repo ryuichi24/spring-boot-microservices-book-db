@@ -39,6 +39,10 @@ subprojects {
         testImplementation 'org.springframework.amqp:spring-rabbit-test:2.4.6'
         implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
     }
+
+    jar {
+        enabled = false
+    }
 }
 
 
