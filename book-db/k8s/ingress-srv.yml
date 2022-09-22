@@ -1,0 +1,29 @@
+# https://kubernetes.github.io/ingress-nginx/deploy/#quick-start
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/user-regex: 'true'
+    # https://neos21.net/blog/2020/07/29-01.html
+    nginx.ingress.kubernetes.io/rewrite-target: /$1$2
+spec:
+  rules:
+    - host: ryu24test.com
+      http:
+        paths:
+          - path: /author-service/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: authorapi-cluster-srv
+                port:
+                  number: 80
+          - path: /book-service/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: bookapi-cluster-srv
+                port:
+                  number: 80

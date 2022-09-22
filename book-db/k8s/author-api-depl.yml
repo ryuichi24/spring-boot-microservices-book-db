@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: author-api-depl
+spec:
+  replicas: 3
+  # selecting a container from template
+  selector:
+    matchLabels:
+      app: authorapiservice
+  # defining a container
+  template:
+    metadata:
+      labels:
+        app: authorapiservice
+    spec:
+      containers:
+        - name: authorapiservice
+          image: ryuichi24/bookdbauthorapiservice:1.0
+          env:
+            - name: PORT
+              value: "80"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authorapi-cluster-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: authorapiservice
+  ports:
+  - name:  authorapiservice
+    protocol: TCP
+    port: 80
+    targetPort: 80
+
