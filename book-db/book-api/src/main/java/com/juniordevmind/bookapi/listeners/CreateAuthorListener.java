@@ -9,7 +9,7 @@ import com.juniordevmind.shared.models.CustomMessage;
 @Component
 public class CreateAuthorListener {
     @RabbitListener(queues = RabbitMQKeys.BOOK_API_QUEUE)
-    public void listener(CustomMessage message) {
+    public void handleMessage(CustomMessage message) {
         System.out.println(message.toString());
     }
 }
