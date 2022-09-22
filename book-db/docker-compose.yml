@@ -5,7 +5,7 @@ services:
     build:
       context: ./
       dockerfile: ./author-api/Dockerfile
-    container_name: ${PROJECT_NAME:-default}-author-service-container
+    container_name: ${PROJECT_NAME:-default}-author-service-prod-container
     ports:
       - 80
     environment:
@@ -20,7 +20,7 @@ services:
     build:
       context: ./
       dockerfile: ./book-api/Dockerfile
-    container_name: ${PROJECT_NAME:-default}-book-service-container
+    container_name: ${PROJECT_NAME:-default}-book-service-prod-container
     ports:
       - 80
     environment:
@@ -35,7 +35,7 @@ services:
     build:
       context: ./
       dockerfile: ./comment-api/Dockerfile
-    container_name: ${PROJECT_NAME:-default}-comment-service-container
+    container_name: ${PROJECT_NAME:-default}-comment-service-prod-container
     ports:
       - 80
     environment:
@@ -47,7 +47,7 @@ services:
       - external
 
   mysql:
-    container_name: ${PROJECT_NAME:-default}-mysql-container
+    container_name: ${PROJECT_NAME:-default}-mysql-prod-container
     restart: always
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
@@ -67,7 +67,7 @@ services:
 
   rabbitMQ:
     image: rabbitmq:3.9.13-management-alpine
-    container_name: ${PROJECT_NAME:-default}-rabbitMQ-container
+    container_name: ${PROJECT_NAME:-default}-rabbitMQ-prod-container
     ports:
       - 5672:5672
       - 15672:15672
@@ -85,7 +85,7 @@ services:
   nginx:
     build:
       context: ./api-gateway
-    container_name: ${PROJECT_NAME:-default}-nginx-container
+    container_name: ${PROJECT_NAME:-default}-nginx-prod-container
     ports:
       - 3333:80
     volumes:
