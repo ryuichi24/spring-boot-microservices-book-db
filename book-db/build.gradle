@@ -80,6 +80,7 @@ project(":comment-api") {
 }
 
 project(":shared") {
+    // https://stackoverflow.com/questions/57662024/gradle-building-spring-boot-library-without-main-class
     bootJar {
         enabled = false
     }
