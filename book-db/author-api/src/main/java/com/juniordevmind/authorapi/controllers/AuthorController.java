@@ -1,5 +1,6 @@
 package com.juniordevmind.authorapi.controllers;
 
+import java.net.URI;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.juniordevmind.authorapi.dtos.CreateAuthorDto;
 import com.juniordevmind.authorapi.dtos.UpdateAuthorDto;
@@ -53,12 +55,14 @@ public class AuthorController {
     @PostMapping("")
     public ResponseEntity<Author> createAuthor(@Valid @RequestBody CreateAuthorDto dto) {
         Author newAuthor = _authorService.createAuthor(dto);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+        .buildAndExpand(newAuthor.getId()).toUri();
         CustomMessage msg = new CustomMessage();
         msg.setMessageId(UUID.randomUUID().toString());
         msg.setMessageDate(new Date());
         msg.setMessage(newAuthor.toString());
         _template.convertAndSend(RabbitMQKeys.AUTHOR_EXCHANGE, "", msg);
-        return ResponseEntity.ok(newAuthor);
+        return ResponseEntity.created(location).body(newAuthor);
     }
 
     @DeleteMapping("/{id}")
