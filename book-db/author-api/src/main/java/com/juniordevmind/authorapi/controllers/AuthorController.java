@@ -65,6 +65,7 @@ public class AuthorController {
         return ResponseEntity.created(location).body(newAuthor);
     }
 
+    // https://stackoverflow.com/questions/4088350/is-rest-delete-really-idempotent
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteAuthor(@PathVariable long id) {
         _authorService.deleteAuthor(id);
