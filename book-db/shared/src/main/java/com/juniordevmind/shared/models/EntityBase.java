@@ -16,9 +16,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
-@SuperBuilder
 @NoArgsConstructor
 @MappedSuperclass
+@SuperBuilder(toBuilder = true)
 public class EntityBase {
     // https://qiita.com/KevinFQ/items/a6d92ec7b32911e50ffe
     @Id
