@@ -5,6 +5,8 @@ spring:
       show-sql: true
     properties:
       hibernate:
+        # https://stackoverflow.com/questions/26548505/org-hibernate-hibernateexception-access-to-dialectresolutioninfo-cannot-be-null
+        dialect: org.hibernate.dialect.MySQLDialect
         hbm2dll:
           create_namespaces: true
 
@@ -12,4 +14,4 @@ spring:
     url: jdbc:mysql://${DB_HOST:mysql}:${DB_PORT:3306}/${DB_NAME:dev}
     username: ${DB_USER:mysql}
     password: ${DB_PASSWORD:thisIsReallyStrongPassword123}
-    driver-class-name: org.mysql.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
