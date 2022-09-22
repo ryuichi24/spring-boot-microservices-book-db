@@ -25,13 +25,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author getAuthor(long id) {
-        Optional<Author> result = _authorRepository.findById(id);
-
-        if (result.isEmpty()) {
-            throw new Error("Not found");
-        }
-
-        return result.get();
+        return _findAuthorById(id);
     }
 
     @Override
@@ -45,18 +39,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void deleteAuthor(long id) {
-        _authorRepository.deleteById(id);
+        Author author = _findAuthorById(id);
+        _authorRepository.delete(author);
     }
 
     @Override
     public void updateAuthor(UpdateAuthorDto dto, long id) {
-        Optional<Author> result = _authorRepository.findById(id);
-
-        if (result.isEmpty()) {
-            throw new Error("Not found");
-        }
-
-        Author found = result.get();
+        Author found = _findAuthorById(id);
 
         if (Objects.nonNull(dto.getName())) {
             found.setName(dto.getName());
@@ -67,6 +56,16 @@ public class AuthorServiceImpl implements AuthorService {
         }
 
         _authorRepository.save(found);
+    }
+
+    private Author _findAuthorById(long id) {
+        Optional<Author> result = _authorRepository.findById(id);
+
+        if (result.isEmpty()) {
+            throw new Error("Not found");
+        }
+
+        return result.get();
     }
 
 }
