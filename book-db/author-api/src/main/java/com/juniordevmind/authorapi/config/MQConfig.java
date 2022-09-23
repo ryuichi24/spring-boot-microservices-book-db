@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.juniordevmind.shared.constants.RabbitMQKeys;
 
+// https://stackoverflow.com/questions/32220312/rabbitmq-amqp-best-practice-queue-topic-design-in-a-microservice-architecture
 @Configuration
 public class MQConfig {
     // author created event
