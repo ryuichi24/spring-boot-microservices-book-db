@@ -21,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "books")
 public class Book extends EntityBase {
     @Column(name = "title", nullable = false)
-    private String name;
+    private String title;
     @Column(name = "description", nullable = false)
     private String description;
 }

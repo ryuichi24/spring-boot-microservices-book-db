@@ -34,7 +34,7 @@ public class BookServiceImpl implements BookService {
     public Book createBook(CreateBookDto dto) {
         return _bookRepository.save(
                 Book.builder()
-                        .name(dto.getTitle())
+                        .title(dto.getTitle())
                         .description(dto.getDescription())
                         .build());
     }
@@ -51,7 +51,7 @@ public class BookServiceImpl implements BookService {
         Book found = _findBookById(id);
 
         if (Objects.nonNull(dto.getTitle())) {
-            found.setName(dto.getTitle());
+            found.setTitle(dto.getTitle());
         }
 
         if (Objects.nonNull(dto.getDescription())) {
