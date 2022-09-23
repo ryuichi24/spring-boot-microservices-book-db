@@ -11,8 +11,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CustomMessage {
+public class CustomMessage<T> {
     private String messageId;
-    private String message;
+    private T payload;
     private Date messageDate;
+
+    public void setPayload(T pl) {
+        payload = pl;
+    }
 }

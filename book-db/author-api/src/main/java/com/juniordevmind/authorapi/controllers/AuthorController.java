@@ -24,6 +24,7 @@ import com.juniordevmind.authorapi.dtos.UpdateAuthorDto;
 import com.juniordevmind.authorapi.models.Author;
 import com.juniordevmind.authorapi.services.AuthorService;
 import com.juniordevmind.shared.constants.RabbitMQKeys;
+import com.juniordevmind.shared.domain.AuthorEventDto;
 import com.juniordevmind.shared.models.CustomMessage;
 
 import lombok.RequiredArgsConstructor;
@@ -57,10 +58,14 @@ public class AuthorController {
         Author newAuthor = _authorService.createAuthor(dto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
         .buildAndExpand(newAuthor.getId()).toUri();
-        CustomMessage msg = new CustomMessage();
+        CustomMessage<AuthorEventDto> msg = new CustomMessage<>();
         msg.setMessageId(UUID.randomUUID().toString());
         msg.setMessageDate(new Date());
-        msg.setMessage(newAuthor.toString());
+        AuthorEventDto authorDto = new AuthorEventDto();
+        authorDto.setId(newAuthor.getId());
+        authorDto.setName(newAuthor.getName());
+        authorDto.setDescription(newAuthor.getDescription());
+        msg.setPayload(authorDto);
         _template.convertAndSend(RabbitMQKeys.AUTHOR_EXCHANGE, "", msg);
         return ResponseEntity.created(location).body(newAuthor);
     }
