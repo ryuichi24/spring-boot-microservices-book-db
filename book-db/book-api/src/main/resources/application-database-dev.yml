@@ -12,7 +12,7 @@ spring:
           create_namespaces: true
 
   datasource:
-    url: jdbc:mysql://${DB_HOST:mysql}:${DB_PORT:3306}/${DB_NAME:dev}
+    url: jdbc:mysql://${DB_HOST:mysql}:${DB_PORT:3306}/${DB_NAME:book_api_dev_db}?createDatabaseIfNotExist=true
     username: ${DB_USER:mysql}
     password: ${DB_PASSWORD:thisIsReallyStrongPassword123}
     driver-class-name: com.mysql.cj.jdbc.Driver
