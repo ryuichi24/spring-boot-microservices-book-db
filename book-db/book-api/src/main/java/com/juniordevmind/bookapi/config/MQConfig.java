@@ -16,12 +16,12 @@ import com.juniordevmind.shared.constants.RabbitMQKeys;
 public class MQConfig {
     @Bean
     public Queue bookApiQueue() {
-        return new Queue(RabbitMQKeys.BOOK_API_QUEUE);
+        return new Queue(RabbitMQKeys.BOOK_API_AUTHOR_CREATED_QUEUE);
     }
 
     @Bean
     public FanoutExchange exchange() {
-        return new FanoutExchange(RabbitMQKeys.AUTHOR_EXCHANGE);
+        return new FanoutExchange(RabbitMQKeys.AUTHOR_CREATED_EXCHANGE);
     }
 
     @Bean

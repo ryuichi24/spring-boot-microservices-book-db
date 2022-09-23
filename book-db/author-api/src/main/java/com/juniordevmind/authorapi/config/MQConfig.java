@@ -15,7 +15,7 @@ import com.juniordevmind.shared.constants.RabbitMQKeys;
 public class MQConfig {
     @Bean
     public FanoutExchange exchange() {
-        return new FanoutExchange(RabbitMQKeys.AUTHOR_EXCHANGE);
+        return new FanoutExchange(RabbitMQKeys.AUTHOR_CREATED_EXCHANGE);
     }
 
     @Bean

@@ -66,7 +66,7 @@ public class AuthorController {
         authorDto.setName(newAuthor.getName());
         authorDto.setDescription(newAuthor.getDescription());
         msg.setPayload(authorDto);
-        _template.convertAndSend(RabbitMQKeys.AUTHOR_EXCHANGE, "", msg);
+        _template.convertAndSend(RabbitMQKeys.AUTHOR_CREATED_EXCHANGE, "", msg);
         return ResponseEntity.created(location).body(newAuthor);
     }
 
