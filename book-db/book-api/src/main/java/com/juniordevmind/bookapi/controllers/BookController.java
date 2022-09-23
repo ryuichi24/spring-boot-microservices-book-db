@@ -1,7 +1,7 @@
 package com.juniordevmind.bookapi.controllers;
 
 import java.net.URI;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,11 +60,13 @@ public class BookController {
                 .buildAndExpand(newBook.getId()).toUri();
         CustomMessage<BookEventDto> msg = new CustomMessage<>();
         msg.setMessageId(UUID.randomUUID().toString());
-        msg.setMessageDate(new Date());
+        msg.setMessageDate(LocalDateTime.now());
         BookEventDto bookEventDto = new BookEventDto();
         bookEventDto.setId(newBook.getId());
         bookEventDto.setTitle(newBook.getTitle());
         bookEventDto.setDescription(newBook.getDescription());
+        bookEventDto.setCreatedAt(bookEventDto.getCreatedAt());
+        bookEventDto.setUpdatedAt(bookEventDto.getUpdatedAt());
         msg.setPayload(bookEventDto);
         _template.convertAndSend(RabbitMQKeys.BOOK_CREATED_EXCHANGE, "", msg);
         return ResponseEntity.created(location).body(newBook);

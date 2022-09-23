@@ -32,6 +32,8 @@ public class BookCreatedListener {
         newBook.setId(bookEventDto.getId());
         newBook.setTitle(bookEventDto.getTitle());
         newBook.setDescription(bookEventDto.getDescription());
+        newBook.setCreatedAt(bookEventDto.getCreatedAt());
+        newBook.setUpdatedAt(bookEventDto.getUpdatedAt());
         _bookRepository.save(newBook);
     }
 }

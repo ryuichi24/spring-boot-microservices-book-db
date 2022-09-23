@@ -32,6 +32,8 @@ public class AuthorCreatedListener {
         newAuthor.setId(authorEventDto.getId());
         newAuthor.setName(authorEventDto.getName());
         newAuthor.setDescription(authorEventDto.getDescription());
+        newAuthor.setCreatedAt(authorEventDto.getCreatedAt());
+        newAuthor.setUpdatedAt(authorEventDto.getUpdatedAt());
         _authorRepository.save(newAuthor);
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.juniordevmind.shared.constants.RabbitMQKeys;
 
 // https://www.youtube.com/watch?v=YLsG0mew2dU
@@ -43,7 +44,9 @@ public class MQConfig {
 
     @Bean
     public MessageConverter messageConverter() {
-        return new Jackson2JsonMessageConverter();
+        ObjectMapper objectMapper = new ObjectMapper(); 
+        objectMapper.findAndRegisterModules();
+        return new Jackson2JsonMessageConverter(objectMapper);
     }
 
     @Bean

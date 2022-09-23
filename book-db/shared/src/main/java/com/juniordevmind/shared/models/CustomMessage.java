@@ -1,6 +1,6 @@
 package com.juniordevmind.shared.models;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +14,7 @@ import lombok.ToString;
 public class CustomMessage<T> {
     private String messageId;
     private T payload;
-    private Date messageDate;
+    private LocalDateTime messageDate;
 
     public void setPayload(T pl) {
         payload = pl;

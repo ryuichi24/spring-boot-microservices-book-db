@@ -1,7 +1,7 @@
 package com.juniordevmind.authorapi.controllers;
 
 import java.net.URI;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,11 +60,13 @@ public class AuthorController {
         .buildAndExpand(newAuthor.getId()).toUri();
         CustomMessage<AuthorEventDto> msg = new CustomMessage<>();
         msg.setMessageId(UUID.randomUUID().toString());
-        msg.setMessageDate(new Date());
+        msg.setMessageDate(LocalDateTime.now());
         AuthorEventDto authorDto = new AuthorEventDto();
         authorDto.setId(newAuthor.getId());
         authorDto.setName(newAuthor.getName());
         authorDto.setDescription(newAuthor.getDescription());
+        authorDto.setCreatedAt(newAuthor.getCreatedAt());
+        authorDto.setUpdatedAt(newAuthor.getUpdatedAt());
         msg.setPayload(authorDto);
         _template.convertAndSend(RabbitMQKeys.AUTHOR_CREATED_EXCHANGE, "", msg);
         return ResponseEntity.created(location).body(newAuthor);

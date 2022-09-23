@@ -6,8 +6,7 @@ import org.springframework.context.annotation.Import;
 
 import com.juniordevmind.shared.errors.RestResponseEntityExceptionHandler;
 
-@Import(RestResponseEntityExceptionHandler.class)
-
+@Import({ RestResponseEntityExceptionHandler.class })
 @SpringBootApplication
 public class BookApiApplication {
 

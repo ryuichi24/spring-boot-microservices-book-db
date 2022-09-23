@@ -12,6 +12,7 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.juniordevmind.shared.constants.RabbitMQKeys;
 
 @Configuration
@@ -22,9 +23,12 @@ public class MQConfig {
         return new FanoutExchange(RabbitMQKeys.AUTHOR_CREATED_EXCHANGE);
     }
 
+    // https://stackoverflow.com/a/27952529/13723015
     @Bean
     public MessageConverter messageConverter() {
-        return new Jackson2JsonMessageConverter();
+        ObjectMapper objectMapper = new ObjectMapper(); 
+        objectMapper.findAndRegisterModules();
+        return new Jackson2JsonMessageConverter(objectMapper);
     }
 
     @Bean
