@@ -1,7 +1,10 @@
 package com.juniordevmind.authorapi.config;
 
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -29,5 +32,23 @@ public class MQConfig {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setMessageConverter(messageConverter());
         return template;
+    }
+
+    // book created event
+    @Bean
+    public Queue bookCreatedQueue() {
+        return new Queue(RabbitMQKeys.AUTHOR_API_BOOK_CREATED_QUEUE);
+    }
+
+    @Bean
+    public FanoutExchange bookCreatedExchange() {
+        return new FanoutExchange(RabbitMQKeys.BOOK_CREATED_EXCHANGE);
+    }
+
+    @Bean
+    public Binding bookCreatedBinding(Queue bookCreatedQueue, FanoutExchange bookCreatedExchange) {
+        return BindingBuilder
+                .bind(bookCreatedQueue)
+                .to(bookCreatedExchange);
     }
 }
