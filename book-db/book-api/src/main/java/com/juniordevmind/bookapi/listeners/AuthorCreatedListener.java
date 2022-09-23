@@ -17,12 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class CreateAuthorListener {
+public class AuthorCreatedListener {
     private final AuthorRepository _authorRepository;
 
     @RabbitListener(queues = RabbitMQKeys.BOOK_API_AUTHOR_CREATED_QUEUE)
     public void handleMessage(CustomMessage<AuthorEventDto> message) {
-        log.info("{} got triggered. Message: {}", CreateAuthorListener.class, message.toString());
+        log.info("{} got triggered. Message: {}", AuthorCreatedListener.class, message.toString());
         AuthorEventDto authorEventDto = message.getPayload();
         Optional<Author> result = _authorRepository.findById(authorEventDto.getId());
         if (result.isPresent()) {
