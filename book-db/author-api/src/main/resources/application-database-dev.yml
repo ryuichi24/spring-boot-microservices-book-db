@@ -13,7 +13,7 @@ spring:
 
   datasource:
     # https://stackoverflow.com/a/52342880/13723015
-    url: jdbc:mysql://${DB_HOST:mysql}:${DB_PORT:3306}/${DB_NAME:author_api_dev_db}?createDatabaseIfNotExist=true
+    url: jdbc:mysql://${DB_HOST:author-api-mysql}:${DB_PORT:3306}/${DB_NAME:dev}?createDatabaseIfNotExist=true
     username: ${DB_USER:mysql}
     password: ${DB_PASSWORD:thisIsReallyStrongPassword123}
     driver-class-name: com.mysql.cj.jdbc.Driver
