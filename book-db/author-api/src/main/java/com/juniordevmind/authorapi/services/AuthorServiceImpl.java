@@ -57,13 +57,21 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author createAuthor(CreateAuthorDto dto) {
-        return _authorRepository.save(
+    public AuthorDto createAuthor(CreateAuthorDto dto) {
+        Author newAuthor = _authorRepository.save(
                 Author.builder()
                         .name(dto.getName())
                         .description(dto.getDescription())
                         .books(dto.getBooks())
                         .build());
+
+        CustomMessage<AuthorEventDto> msg = new CustomMessage<>();
+        msg.setMessageId(UUID.randomUUID().toString());
+        msg.setMessageDate(LocalDateTime.now());
+        msg.setPayload(_authorMapper.toEventDto(newAuthor));
+        _template.convertAndSend(RabbitMQKeys.AUTHOR_CREATED_EXCHANGE, "", msg);
+
+        return _authorMapper.toDto(newAuthor);
     }
 
     @Override

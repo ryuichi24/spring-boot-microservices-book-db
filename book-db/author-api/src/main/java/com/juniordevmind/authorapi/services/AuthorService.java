@@ -13,7 +13,7 @@ public interface AuthorService {
 
     public AuthorDto getAuthor(UUID id);
 
-    public Author createAuthor(CreateAuthorDto dto);
+    public AuthorDto createAuthor(CreateAuthorDto dto);
 
     public void deleteAuthor(UUID id);
 

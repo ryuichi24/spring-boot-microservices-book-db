@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 import com.juniordevmind.shared.models.EntityBase;
 
 import lombok.AllArgsConstructor;
@@ -33,6 +35,7 @@ public class Book extends EntityBase {
     private String description;
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "book_authors", joinColumns = @JoinColumn(name = "id"))
+    @Type(type = "uuid-char")
     @Column(name = "author_id ")
     private List<UUID> authors;
 }

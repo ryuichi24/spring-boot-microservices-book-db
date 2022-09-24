@@ -59,13 +59,22 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book createBook(CreateBookDto dto) {
-        return _bookRepository.save(
+    public BookDto createBook(CreateBookDto dto) {
+        Book newBook = _bookRepository.save(
                 Book.builder()
                         .title(dto.getTitle())
                         .description(dto.getDescription())
                         .authors(dto.getAuthors())
                         .build());
+
+        CustomMessage<BookEventDto> msg = new CustomMessage<>();
+        msg.setMessageId(UUID.randomUUID().toString());
+        msg.setMessageDate(LocalDateTime.now());
+        BookEventDto bookEventDto = _bookMapper.toEventDto(newBook);
+        msg.setPayload(bookEventDto);
+        _template.convertAndSend(RabbitMQKeys.BOOK_CREATED_EXCHANGE, "", msg);
+
+        return _bookMapper.toDto(newBook);
     }
 
     @Override

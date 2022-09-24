@@ -1,13 +1,11 @@
 package com.juniordevmind.bookapi.controllers;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 import javax.validation.Valid;
 
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +20,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.juniordevmind.bookapi.dtos.BookDto;
 import com.juniordevmind.bookapi.dtos.CreateBookDto;
 import com.juniordevmind.bookapi.dtos.UpdateBookDto;
-import com.juniordevmind.bookapi.mappers.BookMapper;
 import com.juniordevmind.bookapi.models.Book;
 import com.juniordevmind.bookapi.services.BookService;
-import com.juniordevmind.shared.constants.RabbitMQKeys;
-import com.juniordevmind.shared.domain.BookEventDto;
-import com.juniordevmind.shared.models.CustomMessage;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,8 +32,6 @@ public class BookController {
     public static final String BASE_URL = "/api/v1/books";
 
     private final BookService _bookService;
-    private final RabbitTemplate _template;
-    private final BookMapper _bookMapper;
 
     @GetMapping("/health")
     public ResponseEntity<String> healthCheck() {
@@ -57,16 +49,10 @@ public class BookController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Book> createBook(@Valid @RequestBody CreateBookDto dto) {
-        Book newBook = _bookService.createBook(dto);
+    public ResponseEntity<BookDto> createBook(@Valid @RequestBody CreateBookDto dto) {
+        BookDto newBook = _bookService.createBook(dto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newBook.getId()).toUri();
-        CustomMessage<BookEventDto> msg = new CustomMessage<>();
-        msg.setMessageId(UUID.randomUUID().toString());
-        msg.setMessageDate(LocalDateTime.now());
-        BookEventDto bookEventDto = _bookMapper.toEventDto(newBook);
-        msg.setPayload(bookEventDto);
-        _template.convertAndSend(RabbitMQKeys.BOOK_CREATED_EXCHANGE, "", msg);
         return ResponseEntity.created(location).body(newBook);
     }
 

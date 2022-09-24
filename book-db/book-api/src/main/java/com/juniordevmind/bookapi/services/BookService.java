@@ -13,7 +13,7 @@ public interface BookService {
 
     public BookDto getBook(UUID id);
 
-    public Book createBook(CreateBookDto dto);
+    public BookDto createBook(CreateBookDto dto);
 
     public void deleteBook(UUID id);
 
