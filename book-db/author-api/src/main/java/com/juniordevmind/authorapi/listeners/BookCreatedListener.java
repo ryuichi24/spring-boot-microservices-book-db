@@ -1,11 +1,15 @@
 package com.juniordevmind.authorapi.listeners;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import com.juniordevmind.authorapi.mappers.BookMapper;
+import com.juniordevmind.authorapi.models.Author;
 import com.juniordevmind.authorapi.models.Book;
+import com.juniordevmind.authorapi.repositories.AuthorRepository;
 import com.juniordevmind.authorapi.repositories.BookRepository;
 import com.juniordevmind.shared.constants.RabbitMQKeys;
 import com.juniordevmind.shared.domain.BookEventDto;
@@ -19,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BookCreatedListener {
     private final BookRepository _bookRepository;
+    private final AuthorRepository _authorRepository;
+    private final BookMapper _bookMapper;
 
     @RabbitListener(queues = RabbitMQKeys.AUTHOR_API_BOOK_CREATED_QUEUE)
     public void handleMessage(CustomMessage<BookEventDto> message) {
@@ -28,12 +34,16 @@ public class BookCreatedListener {
         if (result.isPresent()) {
             return;
         }
-        Book newBook = new Book();
-        newBook.setId(bookEventDto.getId());
-        newBook.setTitle(bookEventDto.getTitle());
-        newBook.setDescription(bookEventDto.getDescription());
-        newBook.setCreatedAt(bookEventDto.getCreatedAt());
-        newBook.setUpdatedAt(bookEventDto.getUpdatedAt());
+        Book newBook = _bookMapper.toEntity(bookEventDto);
+        List<Author> authors = _authorRepository.findAllById(bookEventDto.getAuthors());
+
+        for (Author authorItem : authors) {
+            if (!authorItem.getBooks().contains(bookEventDto.getId())) {
+                authorItem.getBooks().add(bookEventDto.getId());
+                _authorRepository.save(authorItem);
+            }
+        }
+
         _bookRepository.save(newBook);
     }
 }
