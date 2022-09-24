@@ -18,6 +18,12 @@ import com.juniordevmind.shared.constants.RabbitMQKeys;
 // https://www.youtube.com/watch?v=YLsG0mew2dU
 @Configuration
 public class MQConfig {
+    // book created event
+    @Bean
+    public FanoutExchange bookCreatedExchange() {
+        return new FanoutExchange(RabbitMQKeys.BOOK_CREATED_EXCHANGE);
+    }
+
     // author created event
     @Bean
     public Queue authorCreatedQueue() {
@@ -36,15 +42,28 @@ public class MQConfig {
                 .to(authorCreatedExchange);
     }
 
-    // book created event
+    // author updated event
     @Bean
-    public FanoutExchange bookCreatedExchange() {
-        return new FanoutExchange(RabbitMQKeys.BOOK_CREATED_EXCHANGE);
+    public Queue authorUpdatedQueue() {
+        return new Queue(RabbitMQKeys.BOOK_API_AUTHOR_UPDATED_QUEUE);
     }
 
     @Bean
+    public FanoutExchange authorUpdatedExchange() {
+        return new FanoutExchange(RabbitMQKeys.AUTHOR_UPDATED_EXCHANGE);
+    }
+
+    @Bean
+    public Binding authorUpdatedBinding(Queue authorUpdatedQueue, FanoutExchange authorUpdatedExchange) {
+        return BindingBuilder
+                .bind(authorUpdatedQueue)
+                .to(authorUpdatedExchange);
+    }
+
+    // others
+    @Bean
     public MessageConverter messageConverter() {
-        ObjectMapper objectMapper = new ObjectMapper(); 
+        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
         return new Jackson2JsonMessageConverter(objectMapper);
     }

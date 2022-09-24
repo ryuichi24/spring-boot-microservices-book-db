@@ -21,4 +21,8 @@ public class AuthorMapper {
     public AuthorEventDto toEventDto(Author author) {
         return _modelMapper.map(author, AuthorEventDto.class);
     }
+
+    public AuthorEventDto toEventDto(AuthorDto authorDto) {
+        return _modelMapper.map(authorDto, AuthorEventDto.class);
+    }
 }

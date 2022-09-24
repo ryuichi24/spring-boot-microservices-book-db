@@ -7,6 +7,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
@@ -31,7 +32,7 @@ public class Author extends EntityBase {
     @Column(name = "description", nullable = false)
     private String description;
     // https://stackoverflow.com/a/57241586/13723015
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "author_books", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "book_id ")
     private List<UUID> books;

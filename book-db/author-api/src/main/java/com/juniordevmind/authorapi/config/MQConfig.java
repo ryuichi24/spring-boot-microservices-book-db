@@ -24,19 +24,10 @@ public class MQConfig {
         return new FanoutExchange(RabbitMQKeys.AUTHOR_CREATED_EXCHANGE);
     }
 
-    // https://stackoverflow.com/a/27952529/13723015
+    // author updated event
     @Bean
-    public MessageConverter messageConverter() {
-        ObjectMapper objectMapper = new ObjectMapper(); 
-        objectMapper.findAndRegisterModules();
-        return new Jackson2JsonMessageConverter(objectMapper);
-    }
-
-    @Bean
-    public AmqpTemplate template(ConnectionFactory connectionFactory) {
-        RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setMessageConverter(messageConverter());
-        return template;
+    public FanoutExchange authorUpdatedExchange() {
+        return new FanoutExchange(RabbitMQKeys.AUTHOR_UPDATED_EXCHANGE);
     }
 
     // book created event
@@ -55,5 +46,21 @@ public class MQConfig {
         return BindingBuilder
                 .bind(bookCreatedQueue)
                 .to(bookCreatedExchange);
+    }
+
+    // others
+    // https://stackoverflow.com/a/27952529/13723015
+    @Bean
+    public MessageConverter messageConverter() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
+        return new Jackson2JsonMessageConverter(objectMapper);
+    }
+
+    @Bean
+    public AmqpTemplate template(ConnectionFactory connectionFactory) {
+        RabbitTemplate template = new RabbitTemplate(connectionFactory);
+        template.setMessageConverter(messageConverter());
+        return template;
     }
 }
