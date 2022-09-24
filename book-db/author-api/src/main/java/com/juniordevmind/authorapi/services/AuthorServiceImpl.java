@@ -12,6 +12,8 @@ import com.juniordevmind.authorapi.dtos.AuthorDto;
 import com.juniordevmind.authorapi.dtos.BookDto;
 import com.juniordevmind.authorapi.dtos.CreateAuthorDto;
 import com.juniordevmind.authorapi.dtos.UpdateAuthorDto;
+import com.juniordevmind.authorapi.mappers.AuthorMapper;
+import com.juniordevmind.authorapi.mappers.BookMapper;
 import com.juniordevmind.authorapi.models.Author;
 import com.juniordevmind.authorapi.models.Book;
 import com.juniordevmind.authorapi.repositories.AuthorRepository;
@@ -25,6 +27,8 @@ import lombok.RequiredArgsConstructor;
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository _authorRepository;
     private final BookRepository _bookRepository;
+    private final AuthorMapper _authorMapper;
+    private final BookMapper _bookMapper;
 
     @Override
     public List<Author> getAuthors() {
@@ -38,23 +42,11 @@ public class AuthorServiceImpl implements AuthorService {
         for (UUID bookId : author.getBooks()) {
             Optional<Book> result = _bookRepository.findById(bookId);
             if (result.isPresent()) {
-                Book book = result.get();
-                BookDto bookDto = new BookDto();
-                bookDto.setId(id);
-                bookDto.setTitle(book.getTitle());
-                bookDto.setDescription(book.getDescription());
-                bookDto.setCreatedAt(book.getCreatedAt());
-                bookDto.setUpdatedAt(book.getUpdatedAt());
-                books.add(bookDto);
+                books.add(_bookMapper.toDto(result.get()));
             }
         }
-        AuthorDto authorDto = new AuthorDto();
-        authorDto.setId(author.getId());
-        authorDto.setName(author.getName());
-        authorDto.setDescription(author.getDescription());
+        AuthorDto authorDto = _authorMapper.toDto(author);
         authorDto.setBooks(books);
-        authorDto.setCreatedAt(author.getCreatedAt());
-        authorDto.setUpdatedAt(author.getUpdatedAt());
         return authorDto;
     }
 
