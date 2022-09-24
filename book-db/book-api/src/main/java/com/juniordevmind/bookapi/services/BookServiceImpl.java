@@ -38,9 +38,10 @@ public class BookServiceImpl implements BookService {
     private final RabbitTemplate _template;
 
     @Override
-    public List<Book> getBooks() {
-        // return _bookRepository.findAll();
-        return _bookRepository.findAll();
+    public List<BookDto> getBooks() {
+        List<Book> books = _bookRepository.findAll();
+        List<BookDto> bookDtos = books.stream().map(bookItem -> _bookMapper.toDto(bookItem)).toList();
+        return bookDtos;
     }
 
     @Override
@@ -54,7 +55,7 @@ public class BookServiceImpl implements BookService {
             }
         }
         BookDto bookDto = _bookMapper.toDto(book);
-        bookDto.setAuthors(authorDtos);
+        bookDto.setAuthorList(authorDtos);
         return bookDto;
     }
 

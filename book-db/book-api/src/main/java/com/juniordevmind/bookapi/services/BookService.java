@@ -6,10 +6,9 @@ import java.util.UUID;
 import com.juniordevmind.bookapi.dtos.BookDto;
 import com.juniordevmind.bookapi.dtos.CreateBookDto;
 import com.juniordevmind.bookapi.dtos.UpdateBookDto;
-import com.juniordevmind.bookapi.models.Book;
 
 public interface BookService {
-    public List<Book> getBooks();
+    public List<BookDto> getBooks();
 
     public BookDto getBook(UUID id);
 

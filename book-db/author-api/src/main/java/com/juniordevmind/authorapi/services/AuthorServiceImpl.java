@@ -37,8 +37,10 @@ public class AuthorServiceImpl implements AuthorService {
     private final RabbitTemplate _template;
 
     @Override
-    public List<Author> getAuthors() {
-        return _authorRepository.findAll();
+    public List<AuthorDto> getAuthors() {
+        List<Author> authors =  _authorRepository.findAll();
+        List<AuthorDto> authorDtos = authors.stream().map(authorItem -> _authorMapper.toDto(authorItem)).toList();
+        return authorDtos;
     }
 
     @Override
@@ -52,7 +54,7 @@ public class AuthorServiceImpl implements AuthorService {
             }
         }
         AuthorDto authorDto = _authorMapper.toDto(author);
-        authorDto.setBooks(books);
+        authorDto.setBookList(books);
         return authorDto;
     }
 

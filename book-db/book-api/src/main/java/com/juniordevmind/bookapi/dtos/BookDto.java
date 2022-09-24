@@ -1,6 +1,7 @@
 package com.juniordevmind.bookapi.dtos;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.juniordevmind.shared.models.DtoBase;
 
@@ -18,5 +19,6 @@ import lombok.experimental.SuperBuilder;
 public class BookDto extends DtoBase {
     private String title;
     private String description;
-    private List<AuthorDto> authors;
+    private List<AuthorDto> authorList;
+    private List<UUID> authorIdList;
 }

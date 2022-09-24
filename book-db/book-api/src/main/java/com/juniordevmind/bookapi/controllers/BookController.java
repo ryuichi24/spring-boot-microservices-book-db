@@ -20,7 +20,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.juniordevmind.bookapi.dtos.BookDto;
 import com.juniordevmind.bookapi.dtos.CreateBookDto;
 import com.juniordevmind.bookapi.dtos.UpdateBookDto;
-import com.juniordevmind.bookapi.models.Book;
 import com.juniordevmind.bookapi.services.BookService;
 
 import lombok.RequiredArgsConstructor;
@@ -39,7 +38,7 @@ public class BookController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Book>> getBooks() {
+    public ResponseEntity<List<BookDto>> getBooks() {
         return ResponseEntity.ok(_bookService.getBooks());
     }
 

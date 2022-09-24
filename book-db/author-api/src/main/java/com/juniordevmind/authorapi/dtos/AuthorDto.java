@@ -1,6 +1,7 @@
 package com.juniordevmind.authorapi.dtos;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.juniordevmind.shared.models.DtoBase;
 
@@ -16,5 +17,6 @@ import lombok.NoArgsConstructor;
 public class AuthorDto extends DtoBase {
     private String name;
     private String description;
-    private List<BookDto> books;
+    private List<BookDto> bookList;
+    private List<UUID> bookIdList;
 }
