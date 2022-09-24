@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.juniordevmind.bookapi.dtos.CreateBookDto;
 import com.juniordevmind.bookapi.dtos.UpdateBookDto;
+import com.juniordevmind.bookapi.mappers.BookMapper;
 import com.juniordevmind.bookapi.models.Book;
 import com.juniordevmind.bookapi.services.BookService;
 import com.juniordevmind.shared.constants.RabbitMQKeys;
@@ -37,6 +38,7 @@ public class BookController {
 
     private final BookService _bookService;
     private final RabbitTemplate _template;
+    private final BookMapper _bookMapper;
 
     @GetMapping("/health")
     public ResponseEntity<String> healthCheck() {
@@ -61,12 +63,7 @@ public class BookController {
         CustomMessage<BookEventDto> msg = new CustomMessage<>();
         msg.setMessageId(UUID.randomUUID().toString());
         msg.setMessageDate(LocalDateTime.now());
-        BookEventDto bookEventDto = new BookEventDto();
-        bookEventDto.setId(newBook.getId());
-        bookEventDto.setTitle(newBook.getTitle());
-        bookEventDto.setDescription(newBook.getDescription());
-        bookEventDto.setCreatedAt(bookEventDto.getCreatedAt());
-        bookEventDto.setUpdatedAt(bookEventDto.getUpdatedAt());
+        BookEventDto bookEventDto = _bookMapper.toEventDto(newBook);
         msg.setPayload(bookEventDto);
         _template.convertAndSend(RabbitMQKeys.BOOK_CREATED_EXCHANGE, "", msg);
         return ResponseEntity.created(location).body(newBook);
