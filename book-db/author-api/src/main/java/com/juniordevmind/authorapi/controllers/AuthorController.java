@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.juniordevmind.authorapi.dtos.AuthorDto;
 import com.juniordevmind.authorapi.dtos.CreateAuthorDto;
 import com.juniordevmind.authorapi.dtos.UpdateAuthorDto;
 import com.juniordevmind.authorapi.models.Author;
@@ -49,7 +50,7 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Author> getAuthor(@PathVariable UUID id) {
+    public ResponseEntity<AuthorDto> getAuthor(@PathVariable UUID id) {
         return ResponseEntity.ok(_authorService.getAuthor(id));
     }
 
