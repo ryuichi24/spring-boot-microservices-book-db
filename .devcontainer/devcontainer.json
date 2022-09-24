@@ -15,16 +15,14 @@
     "git.mergeEditor": false
   },
   "extensions": [
-    // Util
-    "esbenp.prettier-vscode",
-    "rangav.vscode-thunder-client",
-    "streetsidesoftware.code-spell-checker",
-    "fosshaas.fontsize-shortcuts",
-    // java
-    "vscjava.vscode-java-pack",
-    "vscjava.vscode-spring-initializr",
-    "vscjava.vscode-gradle",
-    // database
-    "mtxr.sqltools"
-  ]
+	"esbenp.prettier-vscode",
+	"rangav.vscode-thunder-client",
+	"streetsidesoftware.code-spell-checker",
+	"fosshaas.fontsize-shortcuts",
+	"vscjava.vscode-java-pack",
+	"vscjava.vscode-spring-initializr",
+	"vscjava.vscode-gradle",
+	"mtxr.sqltools",
+	"cweijan.vscode-mysql-client2"
+]
 }
