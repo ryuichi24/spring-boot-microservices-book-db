@@ -24,6 +24,12 @@ public class MQConfig {
         return new FanoutExchange(RabbitMQKeys.BOOK_CREATED_EXCHANGE);
     }
 
+    // book updated event
+    @Bean
+    public FanoutExchange bookUpdatedExchange() {
+        return new FanoutExchange(RabbitMQKeys.BOOK_UPDATED_EXCHANGE);
+    }
+
     // author created event
     @Bean
     public Queue authorCreatedQueue() {

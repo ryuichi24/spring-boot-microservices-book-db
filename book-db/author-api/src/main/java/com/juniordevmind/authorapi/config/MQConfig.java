@@ -48,6 +48,24 @@ public class MQConfig {
                 .to(bookCreatedExchange);
     }
 
+    // book updated event
+    @Bean
+    public Queue bookUpdatedQueue() {
+        return new Queue(RabbitMQKeys.AUTHOR_API_BOOK_UPDATED_QUEUE);
+    }
+
+    @Bean
+    public FanoutExchange bookUpdatedExchange() {
+        return new FanoutExchange(RabbitMQKeys.BOOK_UPDATED_EXCHANGE);
+    }
+
+    @Bean
+    public Binding bookUpdatedBinding(Queue bookUpdatedQueue, FanoutExchange bookUpdatedExchange) {
+        return BindingBuilder
+                .bind(bookUpdatedQueue)
+                .to(bookUpdatedExchange);
+    }
+
     // others
     // https://stackoverflow.com/a/27952529/13723015
     @Bean

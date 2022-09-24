@@ -35,15 +35,16 @@ public class AuthorCreatedListener {
             return;
         }
         Author newAuthor = _authorMapper.toEntity(authorEventDto);
+        _authorRepository.save(newAuthor);
+
         List<Book> books = _bookRepository.findAllById(authorEventDto.getBooks());
 
-        for(Book bookItem: books) {
-            if(!bookItem.getAuthors().contains(authorEventDto.getId())) {
+        for (Book bookItem : books) {
+            if (!bookItem.getAuthors().contains(authorEventDto.getId())) {
                 bookItem.getAuthors().add(authorEventDto.getId());
                 _bookRepository.save(bookItem);
             }
         }
 
-        _authorRepository.save(newAuthor);
     }
 }

@@ -1,7 +1,7 @@
 package com.juniordevmind.authorapi.listeners;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
@@ -21,19 +21,15 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class BookCreatedListener {
+public class BookUpdatedListener {
     private final BookRepository _bookRepository;
     private final AuthorRepository _authorRepository;
     private final BookMapper _bookMapper;
 
-    @RabbitListener(queues = RabbitMQKeys.AUTHOR_API_BOOK_CREATED_QUEUE)
+    @RabbitListener(queues = RabbitMQKeys.AUTHOR_API_BOOK_UPDATED_QUEUE)
     public void handleMessage(CustomMessage<BookEventDto> message) {
-        log.info("{} got triggered. Message: {}", BookCreatedListener.class, message.toString());
+        log.info("{} got triggered. Message: {}", BookUpdatedListener.class, message.toString());
         BookEventDto bookEventDto = message.getPayload();
-        Optional<Book> result = _bookRepository.findById(bookEventDto.getId());
-        if (result.isPresent()) {
-            return;
-        }
         Book newBook = _bookMapper.toEntity(bookEventDto);
         _bookRepository.save(newBook);
 
@@ -45,6 +41,5 @@ public class BookCreatedListener {
                 _authorRepository.save(authorItem);
             }
         }
-
     }
 }

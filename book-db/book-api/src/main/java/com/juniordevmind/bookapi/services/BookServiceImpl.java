@@ -1,11 +1,13 @@
 package com.juniordevmind.bookapi.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import com.juniordevmind.bookapi.dtos.AuthorDto;
@@ -18,7 +20,10 @@ import com.juniordevmind.bookapi.models.Author;
 import com.juniordevmind.bookapi.models.Book;
 import com.juniordevmind.bookapi.repositories.AuthorRepository;
 import com.juniordevmind.bookapi.repositories.BookRepository;
+import com.juniordevmind.shared.constants.RabbitMQKeys;
+import com.juniordevmind.shared.domain.BookEventDto;
 import com.juniordevmind.shared.errors.NotFoundException;
+import com.juniordevmind.shared.models.CustomMessage;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +35,7 @@ public class BookServiceImpl implements BookService {
     private final AuthorRepository _authorRepository;
     private final AuthorMapper _authorMapper;
     private final BookMapper _bookMapper;
+    private final RabbitTemplate _template;
 
     @Override
     public List<Book> getBooks() {
@@ -85,7 +91,14 @@ public class BookServiceImpl implements BookService {
             found.setAuthors(dto.getAuthors());
         }
 
-        _bookRepository.save(found);
+        Book updated = _bookRepository.save(found);
+        BookEventDto bookEventDto = _bookMapper.toEventDto(updated);
+        CustomMessage<BookEventDto> msg = new CustomMessage<>();
+        msg.setMessageId(UUID.randomUUID().toString());
+        msg.setMessageDate(LocalDateTime.now());
+        msg.setPayload(bookEventDto);
+        _template.convertAndSend(RabbitMQKeys.BOOK_UPDATED_EXCHANGE, "", msg);
+
     }
 
     private Book _findBookById(UUID id) {

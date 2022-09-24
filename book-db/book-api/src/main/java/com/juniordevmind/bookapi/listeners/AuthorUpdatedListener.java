@@ -33,11 +33,10 @@ public class AuthorUpdatedListener {
         Author newAuthor = _authorMapper.toEntity(authorEventDto);
         _authorRepository.save(newAuthor);
 
-        List<UUID> bookIds = authorEventDto.getBooks();
-        List<Book> books = _bookRepository.findAllById(bookIds);
+        List<Book> books = _bookRepository.findAllById(authorEventDto.getBooks());
 
-        for(Book bookItem: books) {
-            if(!bookItem.getAuthors().contains(authorEventDto.getId())) {
+        for (Book bookItem : books) {
+            if (!bookItem.getAuthors().contains(authorEventDto.getId())) {
                 bookItem.getAuthors().add(authorEventDto.getId());
                 _bookRepository.save(bookItem);
             }

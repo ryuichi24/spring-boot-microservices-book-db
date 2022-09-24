@@ -13,4 +13,8 @@ public class RabbitMQKeys {
     public static final String BOOK_CREATED_EXCHANGE = "message.exchange.fanout.book.created";
     public static final String AUTHOR_API_BOOK_CREATED_QUEUE = "author-api.message.queue.book.created";
     public static final String COMMENT_API_BOOK_CREATED_QUEUE = "comment-api.message.queue.book.created";
+    // book updated event
+    public static final String BOOK_UPDATED_EXCHANGE = "message.exchange.fanout.book.updated";
+    public static final String AUTHOR_API_BOOK_UPDATED_QUEUE = "author-api.message.queue.book.updated";
+    public static final String COMMENT_API_BOOK_UPDATED_QUEUE = "comment-api.message.queue.book.updated";
 }
