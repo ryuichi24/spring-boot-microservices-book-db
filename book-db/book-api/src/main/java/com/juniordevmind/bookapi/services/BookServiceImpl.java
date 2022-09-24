@@ -3,6 +3,7 @@ package com.juniordevmind.bookapi.services;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -22,11 +23,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getBooks() {
+        // return _bookRepository.findAll();
         return _bookRepository.findAll();
     }
 
     @Override
-    public Book getBook(long id) {
+    public Book getBook(UUID id) {
         return _findBookById(id);
     }
 
@@ -40,14 +42,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteBook(long id) {
+    public void deleteBook(UUID id) {
         Book book = _findBookById(id);
         _bookRepository.delete(book);
 
     }
 
     @Override
-    public void updateBook(UpdateBookDto dto, long id) {
+    public void updateBook(UpdateBookDto dto, UUID id) {
         Book found = _findBookById(id);
 
         if (Objects.nonNull(dto.getTitle())) {
@@ -61,7 +63,7 @@ public class BookServiceImpl implements BookService {
         _bookRepository.save(found);
     }
 
-    private Book _findBookById(long id) {
+    private Book _findBookById(UUID id) {
         Optional<Book> result = _bookRepository.findById(id);
 
         if (result.isEmpty()) {

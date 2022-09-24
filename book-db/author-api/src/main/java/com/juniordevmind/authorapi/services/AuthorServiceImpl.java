@@ -3,6 +3,7 @@ package com.juniordevmind.authorapi.services;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getAuthor(long id) {
+    public Author getAuthor(UUID id) {
         return _findAuthorById(id);
     }
 
@@ -39,13 +40,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void deleteAuthor(long id) {
+    public void deleteAuthor(UUID id) {
         Author author = _findAuthorById(id);
         _authorRepository.delete(author);
     }
 
     @Override
-    public void updateAuthor(UpdateAuthorDto dto, long id) {
+    public void updateAuthor(UpdateAuthorDto dto, UUID id) {
         Author found = _findAuthorById(id);
 
         if (Objects.nonNull(dto.getName())) {
@@ -59,7 +60,7 @@ public class AuthorServiceImpl implements AuthorService {
         _authorRepository.save(found);
     }
 
-    private Author _findAuthorById(long id) {
+    private Author _findAuthorById(UUID id) {
         Optional<Author> result = _authorRepository.findById(id);
 
         if (result.isEmpty()) {

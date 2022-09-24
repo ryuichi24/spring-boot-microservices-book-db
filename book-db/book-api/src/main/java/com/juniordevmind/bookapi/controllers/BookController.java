@@ -49,7 +49,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBook(@PathVariable long id) {
+    public ResponseEntity<Book> getBook(@PathVariable UUID id) {
         return ResponseEntity.ok(_bookService.getBook(id));
     }
 
@@ -74,13 +74,13 @@ public class BookController {
 
     // https://stackoverflow.com/questions/4088350/is-rest-delete-really-idempotent
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteBook(@PathVariable long id) {
+    public ResponseEntity<String> deleteBook(@PathVariable UUID id) {
         _bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> updateBook(@PathVariable long id, @Valid @RequestBody UpdateBookDto dto) {
+    public ResponseEntity<String> updateBook(@PathVariable UUID id, @Valid @RequestBody UpdateBookDto dto) {
         _bookService.updateBook(dto, id);
         return ResponseEntity.noContent().build();
     }

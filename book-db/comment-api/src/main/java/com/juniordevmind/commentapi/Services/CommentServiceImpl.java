@@ -3,6 +3,7 @@ package com.juniordevmind.commentapi.Services;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment getComment(long id) {
+    public Comment getComment(UUID id) {
         return _findCommentById(id);
     }
 
@@ -38,14 +39,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(long id) {
+    public void deleteComment(UUID id) {
         Comment comment = _findCommentById(id);
         _commentRepository.delete(comment);
 
     }
 
     @Override
-    public void updateComment(UpdateCommentDto dto, long id) {
+    public void updateComment(UpdateCommentDto dto, UUID id) {
         Comment found = _findCommentById(id);
 
         if (Objects.nonNull(dto.getContent())) {
@@ -56,7 +57,7 @@ public class CommentServiceImpl implements CommentService {
 
     }
 
-    private Comment _findCommentById(long id) {
+    private Comment _findCommentById(UUID id) {
         Optional<Comment> result = _commentRepository.findById(id);
 
         if (result.isEmpty()) {

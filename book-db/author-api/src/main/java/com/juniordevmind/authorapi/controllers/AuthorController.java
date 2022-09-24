@@ -49,7 +49,7 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Author> getAuthor(@PathVariable long id) {
+    public ResponseEntity<Author> getAuthor(@PathVariable UUID id) {
         return ResponseEntity.ok(_authorService.getAuthor(id));
     }
 
@@ -57,7 +57,7 @@ public class AuthorController {
     public ResponseEntity<Author> createAuthor(@Valid @RequestBody CreateAuthorDto dto) {
         Author newAuthor = _authorService.createAuthor(dto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-        .buildAndExpand(newAuthor.getId()).toUri();
+                .buildAndExpand(newAuthor.getId()).toUri();
         CustomMessage<AuthorEventDto> msg = new CustomMessage<>();
         msg.setMessageId(UUID.randomUUID().toString());
         msg.setMessageDate(LocalDateTime.now());
@@ -74,13 +74,13 @@ public class AuthorController {
 
     // https://stackoverflow.com/questions/4088350/is-rest-delete-really-idempotent
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAuthor(@PathVariable long id) {
+    public ResponseEntity<String> deleteAuthor(@PathVariable UUID id) {
         _authorService.deleteAuthor(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> updateAuthor(@PathVariable long id, @Valid @RequestBody UpdateAuthorDto dto) {
+    public ResponseEntity<String> updateAuthor(@PathVariable UUID id, @Valid @RequestBody UpdateAuthorDto dto) {
         _authorService.updateAuthor(dto, id);
         return ResponseEntity.noContent().build();
     }

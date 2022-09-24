@@ -1,6 +1,7 @@
 package com.juniordevmind.authorapi.models;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -33,5 +34,5 @@ public class Author extends EntityBase {
     @ElementCollection
     @CollectionTable(name = "author_books", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "book_id ")
-    private List<String> books;
+    private List<UUID> books;
 }

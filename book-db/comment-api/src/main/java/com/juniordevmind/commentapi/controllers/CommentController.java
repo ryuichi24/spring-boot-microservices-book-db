@@ -2,6 +2,7 @@ package com.juniordevmind.commentapi.controllers;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -42,7 +43,7 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Comment> getComment(@PathVariable long id) {
+    public ResponseEntity<Comment> getComment(@PathVariable UUID id) {
         return ResponseEntity.ok(_commentService.getComment(id));
     }
 
@@ -56,13 +57,13 @@ public class CommentController {
 
     // https://stackoverflow.com/questions/4088350/is-rest-delete-really-idempotent
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteComment(@PathVariable long id) {
+    public ResponseEntity<String> deleteComment(@PathVariable UUID id) {
         _commentService.deleteComment(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> updateComment(@PathVariable long id, @Valid @RequestBody UpdateCommentDto dto) {
+    public ResponseEntity<String> updateComment(@PathVariable UUID id, @Valid @RequestBody UpdateCommentDto dto) {
         _commentService.updateComment(dto, id);
         return ResponseEntity.noContent().build();
     }
