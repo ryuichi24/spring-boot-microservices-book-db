@@ -56,6 +56,7 @@ public class AuthorServiceImpl implements AuthorService {
                 Author.builder()
                         .name(dto.getName())
                         .description(dto.getDescription())
+                        .books(dto.getBooks())
                         .build());
     }
 

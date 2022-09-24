@@ -22,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.juniordevmind.authorapi.dtos.AuthorDto;
 import com.juniordevmind.authorapi.dtos.CreateAuthorDto;
 import com.juniordevmind.authorapi.dtos.UpdateAuthorDto;
+import com.juniordevmind.authorapi.mappers.AuthorMapper;
 import com.juniordevmind.authorapi.models.Author;
 import com.juniordevmind.authorapi.services.AuthorService;
 import com.juniordevmind.shared.constants.RabbitMQKeys;
@@ -38,6 +39,7 @@ public class AuthorController {
 
     private final AuthorService _authorService;
     private final RabbitTemplate _template;
+    private final AuthorMapper _authorMapper;
 
     @GetMapping("/health")
     public ResponseEntity<String> healthCheck() {
@@ -62,13 +64,7 @@ public class AuthorController {
         CustomMessage<AuthorEventDto> msg = new CustomMessage<>();
         msg.setMessageId(UUID.randomUUID().toString());
         msg.setMessageDate(LocalDateTime.now());
-        AuthorEventDto authorDto = new AuthorEventDto();
-        authorDto.setId(newAuthor.getId());
-        authorDto.setName(newAuthor.getName());
-        authorDto.setDescription(newAuthor.getDescription());
-        authorDto.setCreatedAt(newAuthor.getCreatedAt());
-        authorDto.setUpdatedAt(newAuthor.getUpdatedAt());
-        msg.setPayload(authorDto);
+        msg.setPayload(_authorMapper.toEventDto(newAuthor));
         _template.convertAndSend(RabbitMQKeys.AUTHOR_CREATED_EXCHANGE, "", msg);
         return ResponseEntity.created(location).body(newAuthor);
     }
