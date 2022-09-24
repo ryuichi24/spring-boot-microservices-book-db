@@ -1,5 +1,6 @@
 package com.juniordevmind.bookapi.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -7,9 +8,15 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.juniordevmind.bookapi.dtos.AuthorDto;
+import com.juniordevmind.bookapi.dtos.BookDto;
 import com.juniordevmind.bookapi.dtos.CreateBookDto;
 import com.juniordevmind.bookapi.dtos.UpdateBookDto;
+import com.juniordevmind.bookapi.mappers.AuthorMapper;
+import com.juniordevmind.bookapi.mappers.BookMapper;
+import com.juniordevmind.bookapi.models.Author;
 import com.juniordevmind.bookapi.models.Book;
+import com.juniordevmind.bookapi.repositories.AuthorRepository;
 import com.juniordevmind.bookapi.repositories.BookRepository;
 import com.juniordevmind.shared.errors.NotFoundException;
 
@@ -20,6 +27,9 @@ import lombok.RequiredArgsConstructor;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository _bookRepository;
+    private final AuthorRepository _authorRepository;
+    private final AuthorMapper _authorMapper;
+    private final BookMapper _bookMapper;
 
     @Override
     public List<Book> getBooks() {
@@ -28,8 +38,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getBook(UUID id) {
-        return _findBookById(id);
+    public BookDto getBook(UUID id) {
+        Book book = _findBookById(id);
+        List<AuthorDto> authorDtos = new ArrayList<>();
+        for (UUID authorId : book.getAuthors()) {
+            Optional<Author> result = _authorRepository.findById(authorId);
+            if (result.isPresent()) {
+                authorDtos.add(_authorMapper.toDto(result.get()));
+            }
+        }
+        BookDto bookDto = _bookMapper.toDto(book);
+        bookDto.setAuthors(authorDtos);
+        return bookDto;
     }
 
     @Override
@@ -38,6 +58,7 @@ public class BookServiceImpl implements BookService {
                 Book.builder()
                         .title(dto.getTitle())
                         .description(dto.getDescription())
+                        .authors(dto.getAuthors())
                         .build());
     }
 
@@ -58,6 +79,10 @@ public class BookServiceImpl implements BookService {
 
         if (Objects.nonNull(dto.getDescription())) {
             found.setDescription(dto.getDescription());
+        }
+
+        if (Objects.nonNull(dto.getAuthors())) {
+            found.setAuthors(dto.getAuthors());
         }
 
         _bookRepository.save(found);

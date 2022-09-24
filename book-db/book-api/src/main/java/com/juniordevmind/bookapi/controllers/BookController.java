@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.juniordevmind.bookapi.dtos.BookDto;
 import com.juniordevmind.bookapi.dtos.CreateBookDto;
 import com.juniordevmind.bookapi.dtos.UpdateBookDto;
 import com.juniordevmind.bookapi.mappers.BookMapper;
@@ -51,7 +52,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBook(@PathVariable UUID id) {
+    public ResponseEntity<BookDto> getBook(@PathVariable UUID id) {
         return ResponseEntity.ok(_bookService.getBook(id));
     }
 

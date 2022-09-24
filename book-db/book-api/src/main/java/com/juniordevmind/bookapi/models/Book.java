@@ -1,7 +1,13 @@
 package com.juniordevmind.bookapi.models;
 
+import java.util.List;
+import java.util.UUID;
+
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import com.juniordevmind.shared.models.EntityBase;
@@ -24,4 +30,8 @@ public class Book extends EntityBase {
     private String title;
     @Column(name = "description", nullable = false)
     private String description;
+    @ElementCollection
+    @CollectionTable(name = "book_authors", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "author_id ")
+    private List<UUID> authors;
 }
