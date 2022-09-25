@@ -80,6 +80,11 @@ public class AuthorServiceImpl implements AuthorService {
     public void deleteAuthor(UUID id) {
         Author author = _findAuthorById(id);
         _authorRepository.delete(author);
+        CustomMessage<AuthorEventDto> msg = new CustomMessage<>();
+        msg.setMessageId(UUID.randomUUID().toString());
+        msg.setMessageDate(LocalDateTime.now());
+        msg.setPayload(_authorMapper.toEventDto(author));
+        _template.convertAndSend(RabbitMQKeys.AUTHOR_DELETED_EXCHANGE, "", msg);
     }
 
     @Override

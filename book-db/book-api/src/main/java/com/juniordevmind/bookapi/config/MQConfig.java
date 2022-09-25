@@ -66,6 +66,24 @@ public class MQConfig {
                 .to(authorUpdatedExchange);
     }
 
+    // author deleted event
+    @Bean
+    public Queue authorDeletedQueue() {
+        return new Queue(RabbitMQKeys.BOOK_API_AUTHOR_DELETED_QUEUE);
+    }
+
+    @Bean
+    public FanoutExchange authorDeletedExchange() {
+        return new FanoutExchange(RabbitMQKeys.AUTHOR_DELETED_EXCHANGE);
+    }
+
+    @Bean
+    public Binding authorDeletedBinding(Queue authorDeletedQueue, FanoutExchange authorDeletedExchange) {
+        return BindingBuilder
+                .bind(authorDeletedQueue)
+                .to(authorDeletedExchange);
+    }
+
     // others
     @Bean
     public MessageConverter messageConverter() {
