@@ -82,7 +82,11 @@ public class BookServiceImpl implements BookService {
     public void deleteBook(UUID id) {
         Book book = _findBookById(id);
         _bookRepository.delete(book);
-
+        CustomMessage<BookEventDto> msg = new CustomMessage<>();
+        msg.setMessageId(UUID.randomUUID().toString());
+        msg.setMessageDate(LocalDateTime.now());
+        msg.setPayload(_bookMapper.toEventDto(book));
+        _template.convertAndSend(RabbitMQKeys.BOOK_DELETED_EXCHANGE, "", msg);
     }
 
     @Override
