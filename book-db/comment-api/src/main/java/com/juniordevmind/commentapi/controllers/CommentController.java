@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.juniordevmind.commentapi.Services.CommentService;
+import com.juniordevmind.commentapi.dtos.CommentDto;
 import com.juniordevmind.commentapi.dtos.CreateCommentDto;
 import com.juniordevmind.commentapi.dtos.UpdateCommentDto;
 import com.juniordevmind.commentapi.models.Comment;
@@ -38,12 +40,12 @@ public class CommentController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Comment>> getComments() {
-        return ResponseEntity.ok(_commentService.getComments());
+    public ResponseEntity<List<Comment>> getComments(@RequestParam UUID book) {
+        return ResponseEntity.ok(_commentService.getComments(book));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Comment> getComment(@PathVariable UUID id) {
+    public ResponseEntity<CommentDto> getComment(@PathVariable UUID id) {
         return ResponseEntity.ok(_commentService.getComment(id));
     }
 
