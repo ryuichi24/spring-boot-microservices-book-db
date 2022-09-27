@@ -90,6 +90,60 @@ public class MQConfig {
                 .to(authorDeletedExchange);
     }
 
+    // comment created event
+    @Bean
+    public Queue commentCreatedQueue() {
+        return new Queue(RabbitMQKeys.BOOK_API_COMMENT_CREATED_QUEUE);
+    }
+
+    @Bean
+    public FanoutExchange commentCreatedExchange() {
+        return new FanoutExchange(RabbitMQKeys.COMMENT_CREATED_EXCHANGE);
+    }
+
+    @Bean
+    public Binding commentCreatedBinding(Queue commentCreatedQueue, FanoutExchange commentCreatedExchange) {
+        return BindingBuilder
+                .bind(commentCreatedQueue)
+                .to(commentCreatedExchange);
+    }
+
+    // comment updated event
+    @Bean
+    public Queue commentUpdatedQueue() {
+        return new Queue(RabbitMQKeys.BOOK_API_COMMENT_UPDATED_QUEUE);
+    }
+
+    @Bean
+    public FanoutExchange commentUpdatedExchange() {
+        return new FanoutExchange(RabbitMQKeys.COMMENT_UPDATED_EXCHANGE);
+    }
+
+    @Bean
+    public Binding commentUpdatedBinding(Queue commentUpdatedQueue, FanoutExchange commentUpdatedExchange) {
+        return BindingBuilder
+                .bind(commentUpdatedQueue)
+                .to(commentUpdatedExchange);
+    }
+
+    // comment deleted event
+    @Bean
+    public Queue commentDeletedQueue() {
+        return new Queue(RabbitMQKeys.BOOK_API_COMMENT_DELETED_QUEUE);
+    }
+
+    @Bean
+    public FanoutExchange commentDeletedExchange() {
+        return new FanoutExchange(RabbitMQKeys.COMMENT_DELETED_EXCHANGE);
+    }
+
+    @Bean
+    public Binding commentDeletedBinding(Queue commentDeletedQueue, FanoutExchange commentDeletedExchange) {
+        return BindingBuilder
+                .bind(commentDeletedQueue)
+                .to(commentDeletedExchange);
+    }
+
     // others
     @Bean
     public MessageConverter messageConverter() {

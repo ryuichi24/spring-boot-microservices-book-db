@@ -18,6 +18,23 @@ import com.juniordevmind.shared.constants.RabbitMQKeys;
 // https://www.youtube.com/watch?v=YLsG0mew2dU
 @Configuration
 public class MQConfig {
+    // comment created
+    @Bean
+    public FanoutExchange commentCreatedExchange() {
+        return new FanoutExchange(RabbitMQKeys.COMMENT_CREATED_EXCHANGE);
+    }
+
+    // comment updated
+    @Bean
+    public FanoutExchange commentUpdatedExchange() {
+        return new FanoutExchange(RabbitMQKeys.COMMENT_UPDATED_EXCHANGE);
+    }
+
+    // comment deleted
+    @Bean
+    public FanoutExchange commentDeletedExchange() {
+        return new FanoutExchange(RabbitMQKeys.COMMENT_DELETED_EXCHANGE);
+    }
 
     // book created event
     @Bean
