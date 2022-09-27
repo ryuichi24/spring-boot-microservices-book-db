@@ -25,4 +25,13 @@ public class RabbitMQKeys {
     public static final String BOOK_DELETED_EXCHANGE = "message.exchange.fanout.book.deleted";
     public static final String AUTHOR_API_BOOK_DELETED_QUEUE = "author-api.message.queue.book.deleted";
     public static final String COMMENT_API_BOOK_DELETED_QUEUE = "comment-api.message.queue.book.deleted";
+    // comment created event
+    public static final String COMMENT_CREATED_EXCHANGE = "message.exchange.fanout.comment.created";
+    public static final String BOOK_API_COMMENT_CREATED_QUEUE = "book-api.message.queue.comment.created";
+    // comment updated event
+    public static final String COMMENT_UPDATED_EXCHANGE = "message.exchange.fanout.comment.updated";
+    public static final String BOOK_API_COMMENT_UPDATED_QUEUE = "book-api.message.queue.comment.updated";
+    // comment deleted event
+    public static final String COMMENT_DELETED_EXCHANGE = "message.exchange.fanout.comment.deleted";
+    public static final String BOOK_API_COMMENT_DELETED_QUEUE = "book-api.message.queue.comment.deleted";
 }
