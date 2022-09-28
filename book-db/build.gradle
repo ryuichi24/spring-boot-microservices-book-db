@@ -6,6 +6,7 @@ plugins {
 	id 'java'
 }
 
+
 subprojects {
     apply plugin: "org.springframework.boot"
     apply plugin: "io.spring.dependency-management"
@@ -85,6 +86,11 @@ project(":shared") {
     // https://stackoverflow.com/questions/57662024/gradle-building-spring-boot-library-without-main-class
     bootJar {
         enabled = false
+    }
+
+    // https://qiita.com/opengl-8080/items/6409669dc3f8b8071af4
+    jar {
+        enabled = true
     }
 
     dependencies {
