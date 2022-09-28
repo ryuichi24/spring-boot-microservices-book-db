@@ -23,6 +23,7 @@
 	"vscjava.vscode-spring-initializr",
 	"vscjava.vscode-gradle",
 	"mtxr.sqltools",
-	"cweijan.vscode-mysql-client2"
+	"cweijan.vscode-mysql-client2",
+	"ipedrazas.kubernetes-snippets"
 ]
 }
