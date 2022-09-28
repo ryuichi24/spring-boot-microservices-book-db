@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: comment-api-depl
 spec:
-  replicas: 3
+  replicas: 1
   # selecting a container from template
   selector:
     matchLabels:
@@ -16,23 +16,38 @@ spec:
     spec:
       containers:
         - name: commentapiservice
-          image: ryuichi24/bookdbcommentapiservice:1.0
+          image: ryuichi24/bookdb-comment-service:1.0
           env:
             - name: PORT
               value: "80"
+            - name: RABBIT_MQ_HOST
+              value: rabbitmq-clusterip-srv
+            - name: RABBIT_MQ_PASSWORD
+              value: rabbitmq
+            - name: RABBIT_MQ_USERNAME
+              value: rabbitmq
+            - name: DB_HOST
+              value: comment-api-mysql-clusterip-srv
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_NAME
+              value: dev
+            - name: DB_USER
+              value: mysql
+            - name: DB_PASSWORD
+              value: thisIsReallyStrongPassword123
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: commentapi-cluster-srv
+  name: comment-service
 spec:
   type: ClusterIP
   selector:
     app: commentapiservice
   ports:
-  - name:  commentapiservice
-    protocol: TCP
-    port: 80
-    targetPort: 80
-
+    - name:  commentsrvpt
+      protocol: TCP
+      port: 80
+      targetPort: 80

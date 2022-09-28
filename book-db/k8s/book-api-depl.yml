@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: book-api-depl
 spec:
-  replicas: 3
+  replicas: 1
   # selecting a container from template
   selector:
     matchLabels:
@@ -16,22 +16,38 @@ spec:
     spec:
       containers:
         - name: bookapiservice
-          image: ryuichi24/bookdbbookapiservice:1.0
+          image: ryuichi24/bookdb-book-service:1.0
           env:
             - name: PORT
               value: "80"
+            - name: RABBIT_MQ_HOST
+              value: rabbitmq-clusterip-srv
+            - name: RABBIT_MQ_PASSWORD
+              value: rabbitmq
+            - name: RABBIT_MQ_USERNAME
+              value: rabbitmq
+            - name: DB_HOST
+              value: book-api-mysql-clusterip-srv
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_NAME
+              value: dev
+            - name: DB_USER
+              value: mysql
+            - name: DB_PASSWORD
+              value: thisIsReallyStrongPassword123
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: bookapi-cluster-srv
+  name: book-service
 spec:
   type: ClusterIP
   selector:
     app: bookapiservice
   ports:
-  - name:  bookapiservice
-    protocol: TCP
-    port: 80
-    targetPort: 80
+    - name:  booksrvpt
+      protocol: TCP
+      port: 80
+      targetPort: 80
