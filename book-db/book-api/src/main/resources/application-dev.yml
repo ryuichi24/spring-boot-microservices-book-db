@@ -12,7 +12,7 @@ logging:
 spring:
   rabbitmq:
     # https://stackoverflow.com/questions/33880410/spring-boot-cannot-connect-to-rabbitmq
-    host: rabbitmq
+    host: ${RABBIT_MQ_HOST:rabbitmq}
     port: 5672
-    password: rabbitmq
-    username: rabbitmq
+    password: ${RABBIT_MQ_PASSWORD:rabbitmq}
+    username: ${RABBIT_MQ_USERNAME:rabbitmq}
