@@ -34,12 +34,17 @@ subprojects {
         implementation 'org.springframework.boot:spring-boot-starter-web:2.7.3'
         developmentOnly 'org.springframework.boot:spring-boot-devtools:2.7.3'
         testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.3'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.3'
+        implementation 'org.springframework.boot:spring-boot-starter-validation:2.7.3'
+        implementation 'mysql:mysql-connector-java:8.0.30'
         compileOnly 'org.projectlombok:lombok:1.18.24'
         annotationProcessor 'org.projectlombok:lombok:1.18.24'
         testImplementation 'org.springframework.amqp:spring-rabbit-test:2.4.6'
         implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+        implementation 'org.modelmapper:modelmapper:3.1.0'
     }
 
+    // https://stackoverflow.com/questions/67663728/spring-boot-2-5-0-generates-plain-jar-file-can-i-remove-it
     jar {
         enabled = false
     }
@@ -77,6 +82,7 @@ project(":comment-api") {
 }
 
 project(":shared") {
+    // https://stackoverflow.com/questions/57662024/gradle-building-spring-boot-library-without-main-class
     bootJar {
         enabled = false
     }
