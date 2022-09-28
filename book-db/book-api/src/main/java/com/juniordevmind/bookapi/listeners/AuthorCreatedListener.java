@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.juniordevmind.bookapi.mappers.AuthorMapper;
 import com.juniordevmind.bookapi.models.Author;
@@ -26,6 +27,7 @@ public class AuthorCreatedListener {
     private final AuthorRepository _authorRepository;
     private final AuthorMapper _authorMapper;
 
+    @Transactional()
     @RabbitListener(queues = RabbitMQKeys.BOOK_API_AUTHOR_CREATED_QUEUE)
     public void handleMessage(CustomMessage<AuthorEventDto> message) {
         log.info("{} got triggered. Message: {}", AuthorCreatedListener.class, message.toString());

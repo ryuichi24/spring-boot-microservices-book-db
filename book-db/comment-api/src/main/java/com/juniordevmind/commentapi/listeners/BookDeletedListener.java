@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.juniordevmind.commentapi.models.Comment;
 import com.juniordevmind.commentapi.repositories.BookRepository;
@@ -22,6 +23,7 @@ public class BookDeletedListener {
     private final BookRepository _bookRepository;
     private final CommentRepository _commentRepository;
 
+    @Transactional()
     @RabbitListener(queues = RabbitMQKeys.COMMENT_API_BOOK_DELETED_QUEUE)
     public void handleMessage(CustomMessage<BookEventDto> message) {
         log.info("{} got triggered. Message: {}", BookDeletedListener.class, message.toString());

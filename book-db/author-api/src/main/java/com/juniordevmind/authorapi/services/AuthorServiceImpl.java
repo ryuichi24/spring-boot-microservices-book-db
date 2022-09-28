@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.juniordevmind.authorapi.dtos.AuthorDto;
 import com.juniordevmind.authorapi.dtos.BookDto;
@@ -29,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional()
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository _authorRepository;
     private final BookRepository _bookRepository;

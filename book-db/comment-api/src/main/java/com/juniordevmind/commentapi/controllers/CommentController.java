@@ -50,8 +50,8 @@ public class CommentController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Comment> createComment(@Valid @RequestBody CreateCommentDto dto) {
-        Comment newComment = _commentService.createComment(dto);
+    public ResponseEntity<CommentDto> createComment(@Valid @RequestBody CreateCommentDto dto) {
+        CommentDto newComment = _commentService.createComment(dto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newComment.getId()).toUri();
         return ResponseEntity.created(location).body(newComment);

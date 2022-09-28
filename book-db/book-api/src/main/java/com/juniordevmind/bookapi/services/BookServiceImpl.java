@@ -9,17 +9,22 @@ import java.util.UUID;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.juniordevmind.bookapi.dtos.AuthorDto;
 import com.juniordevmind.bookapi.dtos.BookDto;
+import com.juniordevmind.bookapi.dtos.CommentDto;
 import com.juniordevmind.bookapi.dtos.CreateBookDto;
 import com.juniordevmind.bookapi.dtos.UpdateBookDto;
 import com.juniordevmind.bookapi.mappers.AuthorMapper;
 import com.juniordevmind.bookapi.mappers.BookMapper;
+import com.juniordevmind.bookapi.mappers.CommentMapper;
 import com.juniordevmind.bookapi.models.Author;
 import com.juniordevmind.bookapi.models.Book;
+import com.juniordevmind.bookapi.models.Comment;
 import com.juniordevmind.bookapi.repositories.AuthorRepository;
 import com.juniordevmind.bookapi.repositories.BookRepository;
+import com.juniordevmind.bookapi.repositories.CommentRepository;
 import com.juniordevmind.shared.constants.RabbitMQKeys;
 import com.juniordevmind.shared.domain.BookEventDto;
 import com.juniordevmind.shared.errors.NotFoundException;
@@ -29,12 +34,15 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional()
 public class BookServiceImpl implements BookService {
 
     private final BookRepository _bookRepository;
     private final AuthorRepository _authorRepository;
+    private final CommentRepository _commentRepository;
     private final AuthorMapper _authorMapper;
     private final BookMapper _bookMapper;
+    private final CommentMapper _commentMapper;
     private final RabbitTemplate _template;
 
     @Override
@@ -56,6 +64,11 @@ public class BookServiceImpl implements BookService {
         }
         BookDto bookDto = _bookMapper.toDto(book);
         bookDto.setAuthorList(authorDtos);
+
+        List<Comment> comments = _commentRepository.findAllByBookId(book.getId());
+        List<CommentDto> commentDtos = comments.stream().map(commentItem -> _commentMapper.toDto(commentItem)).toList();
+        bookDto.setCommentList(commentDtos);
+
         return bookDto;
     }
 

@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.juniordevmind.authorapi.models.Author;
 import com.juniordevmind.authorapi.models.Book;
@@ -25,12 +26,13 @@ public class BookDeletedListener {
     private final BookRepository _bookRepository;
     private final AuthorRepository _authorRepository;
 
+    @Transactional()
     @RabbitListener(queues = RabbitMQKeys.AUTHOR_API_BOOK_DELETED_QUEUE)
-    public void handleMessage(CustomMessage<BookEventDto> message) { 
+    public void handleMessage(CustomMessage<BookEventDto> message) {
         log.info("{} got triggered. Message: {}", BookDeletedListener.class, message.toString());
         BookEventDto bookEventDto = message.getPayload();
         Optional<Book> result = _bookRepository.findById(bookEventDto.getId());
-        if(result.isEmpty()) {
+        if (result.isEmpty()) {
             return;
         }
 
@@ -39,11 +41,10 @@ public class BookDeletedListener {
 
         List<Author> authors = _authorRepository.findAllById(bookEventDto.getAuthors());
 
-        for(Author authorItem: authors) {
+        for (Author authorItem : authors) {
             List<UUID> filtered = authorItem.getBooks().stream()
-                .filter(bookId -> !bookId.equals(bookEventDto.getId())).toList();
+                    .filter(bookId -> !bookId.equals(bookEventDto.getId())).toList();
             authorItem.setBooks(filtered);
-            _authorRepository.save(authorItem);
         }
 
     }

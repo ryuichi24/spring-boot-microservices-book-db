@@ -13,7 +13,7 @@ public interface CommentService {
 
     public CommentDto getComment(UUID id);
 
-    public Comment createComment(CreateCommentDto dto);
+    public CommentDto createComment(CreateCommentDto dto);
 
     public void deleteComment(UUID id);
 

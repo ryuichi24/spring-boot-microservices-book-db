@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.juniordevmind.commentapi.dtos.CommentDto;
 import com.juniordevmind.commentapi.models.Comment;
+import com.juniordevmind.shared.domain.CommentEventDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,4 +18,7 @@ public class CommentMapper {
         return _modelMapper.map(comment, CommentDto.class);
     }
 
+    public CommentEventDto toEventDto(Comment entity) {
+        return _modelMapper.map(entity, CommentEventDto.class);
+    }
 }

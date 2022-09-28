@@ -1,10 +1,12 @@
 package com.juniordevmind.authorapi.listeners;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.juniordevmind.authorapi.mappers.BookMapper;
 import com.juniordevmind.authorapi.models.Author;
@@ -26,6 +28,7 @@ public class BookCreatedListener {
     private final AuthorRepository _authorRepository;
     private final BookMapper _bookMapper;
 
+    @Transactional()
     @RabbitListener(queues = RabbitMQKeys.AUTHOR_API_BOOK_CREATED_QUEUE)
     public void handleMessage(CustomMessage<BookEventDto> message) {
         log.info("{} got triggered. Message: {}", BookCreatedListener.class, message.toString());
@@ -34,15 +37,18 @@ public class BookCreatedListener {
         if (result.isPresent()) {
             return;
         }
-        Book newBook = _bookMapper.toEntity(bookEventDto);
-        _bookRepository.save(newBook);
+
+        _bookRepository.save(_bookMapper.toEntity(bookEventDto));
+
+        if (Objects.isNull(bookEventDto.getAuthors()) || bookEventDto.getAuthors().size() == 0) {
+            return;
+        }
 
         List<Author> authors = _authorRepository.findAllById(bookEventDto.getAuthors());
 
         for (Author authorItem : authors) {
             if (!authorItem.getBooks().contains(bookEventDto.getId())) {
                 authorItem.getBooks().add(bookEventDto.getId());
-                _authorRepository.save(authorItem);
             }
         }
 
