@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-api-gateway-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-api-gateway
+  template:
+    metadata:
+      labels:
+        app: nginx-api-gateway
+    spec:
+      containers:
+        - name: nginx-api-gateway
+          image: ryuichi24/bookdb-nginx-api-gateway:1.0
+          ports:
+            - containerPort: 80
+              name: gateway-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-api-gateway-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx-api-gateway
+  ports:
+    - name: gateway-port
+      protocol: TCP
+      port: 80
+      targetPort: 80
