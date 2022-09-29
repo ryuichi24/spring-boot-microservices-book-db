@@ -55,7 +55,7 @@ services:
       - ${DB_PORT:-3306}:3306
     volumes:
       # - ./docker/mysql/init-tables.sql:/docker-entrypoint-initdb.d/init-tables.sql
-      - ../.docker/author_api_mysql_data:/var/lib/mysql
+      - ./.docker/author_api_mysql_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
       MYSQL_DATABASE: ${DB_DATABASE:-dev}
@@ -74,7 +74,7 @@ services:
       - ${DB_PORT:-3305}:3306
     volumes:
       # - ./docker/mysql/init-tables.sql:/docker-entrypoint-initdb.d/init-tables.sql
-      - ../.docker/book_api_mysql_data:/var/lib/mysql
+      - ./.docker/book_api_mysql_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
       MYSQL_DATABASE: ${DB_DATABASE:-dev}
@@ -93,7 +93,7 @@ services:
       - ${DB_PORT:-3304}:3306
     volumes:
       # - ./docker/mysql/init-tables.sql:/docker-entrypoint-initdb.d/init-tables.sql
-      - ../.docker/comment_api_mysql_data:/var/lib/mysql
+      - ./.docker/comment_api_mysql_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
       MYSQL_DATABASE: ${DB_DATABASE:-dev}
