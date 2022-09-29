@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: bookapiservice
-          image: testcontainerregistrymyfirstrgb6bce5d44706469baf6b.azurecr.io/authorserviceimagerepo
+          image: testcontainerregistrymyfirstrgb6bce5d44706469baf6b.azurecr.io/bookserviceimagerepo
           env:
             - name: PORT
               value: "80"
