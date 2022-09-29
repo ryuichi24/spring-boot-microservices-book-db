@@ -58,7 +58,7 @@ services:
       - ./.docker/author_api_mysql_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
-      MYSQL_DATABASE: ${DB_DATABASE:-dev}
+      MYSQL_DATABASE: ${DB_DATABASE:-prod}
       MYSQL_USER: ${DB_USER:-mysql}
       MYSQL_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
     networks:
@@ -77,7 +77,7 @@ services:
       - ./.docker/book_api_mysql_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
-      MYSQL_DATABASE: ${DB_DATABASE:-dev}
+      MYSQL_DATABASE: ${DB_DATABASE:-prod}
       MYSQL_USER: ${DB_USER:-mysql}
       MYSQL_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
     networks:
@@ -96,7 +96,7 @@ services:
       - ./.docker/comment_api_mysql_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
-      MYSQL_DATABASE: ${DB_DATABASE:-dev}
+      MYSQL_DATABASE: ${DB_DATABASE:-prod}
       MYSQL_USER: ${DB_USER:-mysql}
       MYSQL_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
     networks:
