@@ -14,7 +14,16 @@ RUN mkdir /app
 
 EXPOSE 80
 
+ENV PORT=80
 ENV SPRING_PROFILES_ACTIVE=prod
+ENV DB_HOST=comment-api-mysql
+ENV DB_PORT=3306
+ENV DB_NAME=prod
+ENV DB_USER=mysql
+ENV DB_PASSWORD=thisIsReallyStrongPassword123
+ENV RABBIT_MQ_HOST=rabbitmq
+ENV RABBIT_MQ_PASSWORD=rabbitmq
+ENV RABBIT_MQ_USERNAME=rabbitmq
 
 COPY --from=build "/home/build/comment-api/build/libs/*.jar" /app/app.jar
 

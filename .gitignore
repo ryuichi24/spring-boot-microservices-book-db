@@ -36,9 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-application*prod.yml
-application*stg.yml
-
 .docker
 
 .env

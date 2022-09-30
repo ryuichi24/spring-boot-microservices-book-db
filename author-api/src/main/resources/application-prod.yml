@@ -1,0 +1,18 @@
+server:
+  port: ${PORT:8080}
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+      springframework:
+        web: DEBUG
+
+spring:
+  rabbitmq:
+    # https://stackoverflow.com/questions/33880410/spring-boot-cannot-connect-to-rabbitmq
+    host: ${RABBIT_MQ_HOST:rabbitmq}
+    port: 5672
+    password: ${RABBIT_MQ_PASSWORD:rabbitmq}
+    username: ${RABBIT_MQ_USERNAME:rabbitmq}
