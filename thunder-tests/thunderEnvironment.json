@@ -1,0 +1,30 @@
+[
+  {
+    "_id": "19d69e19-4364-4cc7-a343-3ee4143b842c",
+    "name": "aks",
+    "default": true,
+    "sortNum": 10000,
+    "created": "2022-09-30T04:49:21.158Z",
+    "modified": "2022-09-30T04:49:42.372Z",
+    "data": [
+      {
+        "name": "BASE_URL",
+        "value": "http://20.85.163.237"
+      }
+    ]
+  },
+  {
+    "_id": "28bb2bf6-58ba-4c57-9e84-352f05e45e6c",
+    "name": "local",
+    "default": false,
+    "sortNum": 20000,
+    "created": "2022-09-30T05:15:12.670Z",
+    "modified": "2022-09-30T05:15:37.956Z",
+    "data": [
+      {
+        "name": "BASE_URL",
+        "value": "http://localhost"
+      }
+    ]
+  }
+]
