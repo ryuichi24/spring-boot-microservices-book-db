@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: authorapiservice
-          image: ryuichi24/bookdb-author-service:1.0
+          image: __DOCKER_IMAGE__
           env:
             - name: PORT
               value: "80"

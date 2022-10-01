@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: commentapiservice
-          image: ryuichi24/bookdb-comment-service:1.0
+          image: __DOCKER_IMAGE__
           env:
             - name: PORT
               value: "80"
