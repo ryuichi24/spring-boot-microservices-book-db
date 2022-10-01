@@ -16,9 +16,9 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build & push Docker image
         run: |
-          echo "{{ secrets.DOCKER_PASSWORD }}" | docker login -u "{{ secrets.DOCKER_USERNAME }}" --password-stdin
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           export DOCKER_IMAGE_TAG=$(date +%s)
-          export DOCKER_IMAGE="{{ secrets.DOCKER_ACCOUNT }}/bookdb-author-service:${DOCKER_IMAGE_TAG}"
+          export DOCKER_IMAGE="${{ secrets.DOCKER_ACCOUNT }}/bookdb-author-service:${DOCKER_IMAGE_TAG}"
           docker build . --file ./author-api/Dockerfile --tag ${DOCKER_IMAGE}
           docker push ${DOCKER_IMAGE}
 
@@ -30,9 +30,9 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build & push Docker image
         run: |
-          echo "{{ secrets.DOCKER_PASSWORD }}" | docker login -u "{{ secrets.DOCKER_USERNAME }}" --password-stdin
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           export DOCKER_IMAGE_TAG=$(date +%s)
-          export DOCKER_IMAGE="{{ secrets.DOCKER_ACCOUNT }}/bookdb-book-service:${DOCKER_IMAGE_TAG}"
+          export DOCKER_IMAGE="${{ secrets.DOCKER_ACCOUNT }}/bookdb-book-service:${DOCKER_IMAGE_TAG}"
           docker build . --file ./author-api/Dockerfile --tag ${DOCKER_IMAGE}
           docker push ${DOCKER_IMAGE}
 
@@ -44,8 +44,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build & push Docker image
         run: |
-          echo "{{ secrets.DOCKER_PASSWORD }}" | docker login -u "{{ secrets.DOCKER_USERNAME }}" --password-stdin
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           export DOCKER_IMAGE_TAG=$(date +%s)
-          export DOCKER_IMAGE="{{ secrets.DOCKER_ACCOUNT }}/bookdb-comment-service:${DOCKER_IMAGE_TAG}"
+          export DOCKER_IMAGE="${{ secrets.DOCKER_ACCOUNT }}/bookdb-comment-service:${DOCKER_IMAGE_TAG}"
           docker build . --file ./author-api/Dockerfile --tag ${DOCKER_IMAGE}
           docker push ${DOCKER_IMAGE}
