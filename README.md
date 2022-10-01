@@ -7,8 +7,6 @@
 
 ## Docker-compose
 
-You need to add `application-database-prod.yml` and `application-prod.yml` in each Spring Boot project `resources` folder according to `application-database-dev.yml` and `application-dev.yml` files placed in the same folder.
-
 ```
 docker-compose up -d
 ```
