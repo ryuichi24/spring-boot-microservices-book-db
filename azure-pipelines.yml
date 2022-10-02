@@ -31,8 +31,8 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         repository: '$(authorServiceImageRepo)'
         command: buildAndPush
-        Dockerfile: '$(Build.SourceDirectory)/author-api/Dockerfile'
-        buildContext: '$(Build.SourceDirectory)'
+        Dockerfile: '$(Build.SourcesDirectory)/author-api/Dockerfile'
+        buildContext: '$(Build.SourcesDirectory)'
         tags: |
           $(tag)
           latest
@@ -42,8 +42,8 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         repository: '$(bookServiceImageRepo)'
         command: buildAndPush
-        Dockerfile: '$(Build.SourceDirectory)/book-api/Dockerfile'
-        buildContext: '$(Build.SourceDirectory)'
+        Dockerfile: '$(Build.SourcesDirectory)/book-api/Dockerfile'
+        buildContext: '$(Build.SourcesDirectory)'
         tags: |
           $(tag)
           latest
@@ -53,8 +53,8 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         repository: '$(commentServiceImageRepo)'
         command: buildAndPush
-        Dockerfile: '$(Build.SourceDirectory)/comment-api/Dockerfile'
-        buildContext: '$(Build.SourceDirectory)'
+        Dockerfile: '$(Build.SourcesDirectory)/comment-api/Dockerfile'
+        buildContext: '$(Build.SourcesDirectory)'
         tags: |
           $(tag)
           latest
