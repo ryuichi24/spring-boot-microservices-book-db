@@ -9,8 +9,8 @@ resources:
 - repo: self
 
 variables:
-  dockerRegistryServiceConnection: 'test container registry (myFirstRG)'
-  k8sServiceConnection: 'test k8s (myFirstRG)'
+  dockerRegistryServiceConnection: 'testcontainerregistrymyfirstrg9554fd8774bb485c878d'
+  k8sServiceConnection: 'k8s conn'
   authorServiceImageRepo: authorserviceimagerepo
   bookServiceImageRepo: bookserviceimagerepo
   commentServiceImageRepo: commentserviceimagerepo
