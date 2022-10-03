@@ -98,7 +98,33 @@ stages:
             $(Pipeline.Workspace)/manifests/author-api-mysql-depl.yml
             $(Pipeline.Workspace)/manifests/book-api-mysql-depl.yml
             $(Pipeline.Workspace)/manifests/comment-api-mysql-depl.yml
-            $(Pipeline.Workspace)/manifests/author-api-depl.yml
-            $(Pipeline.Workspace)/manifests/book-api-depl.yml
-            $(Pipeline.Workspace)/manifests/comment-api-depl.yml
             $(Pipeline.Workspace)/manifests/ingress-srv.yml
+      - task: KubernetesManifest@0
+        inputs:
+          action: 'deploy'
+          kubernetesServiceConnection: $(k8sServiceConnection)
+          namespace: 'default'
+          containers: |
+            $(dockerRegistryEndpoint).azurecr.io/$(authorServiceImageRepo):$(tag)
+          manifests: |
+            $(Pipeline.Workspace)/manifests/author-api-depl.yml
+      - task: KubernetesManifest@0
+        inputs:
+          action: 'deploy'
+          kubernetesServiceConnection: $(k8sServiceConnection)
+          namespace: 'default'
+          containers: |
+            $(dockerRegistryEndpoint).azurecr.io/$(bookServiceImageRepo):$(tag)
+          manifests: |
+            $(Pipeline.Workspace)/manifests/book-api-depl.yml
+      - task: KubernetesManifest@0
+        inputs:
+          action: 'deploy'
+          kubernetesServiceConnection: $(k8sServiceConnection)
+          namespace: 'default'
+          containers: |
+            $(dockerRegistryEndpoint).azurecr.io/$(commentServiceImageRepo):$(tag)
+          manifests: |
+            $(Pipeline.Workspace)/manifests/comment-api-depl.yml
+
+      
