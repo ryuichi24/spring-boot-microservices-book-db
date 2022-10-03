@@ -1,0 +1,130 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- add-azure-pipeline
+
+resources:
+- repo: self
+
+variables:
+  dockerRegistryServiceConnection: 'testcontainerregistrymyfirstrg9554fd8774bb485c878d'
+  dockerRegistryEndpoint: 'testcontainerregistrymyfirstrg9554fd8774bb485c878d'
+  k8sServiceConnection: 'k8s conn'
+  authorServiceImageRepo: authorserviceimagerepo
+  bookServiceImageRepo: bookserviceimagerepo
+  commentServiceImageRepo: commentserviceimagerepo
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: Build_container_images
+    displayName: Build container images
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      displayName: Build an author service image
+      inputs:
+        containerRegistry: $(dockerRegistryServiceConnection)
+        repository: '$(authorServiceImageRepo)'
+        command: buildAndPush
+        Dockerfile: '$(Build.SourcesDirectory)/author-api/Dockerfile'
+        buildContext: '$(Build.SourcesDirectory)'
+        tags: |
+          $(tag)
+          latest
+    - task: Docker@2
+      displayName: Build a book service image
+      inputs:
+        containerRegistry: $(dockerRegistryServiceConnection)
+        repository: '$(bookServiceImageRepo)'
+        command: buildAndPush
+        Dockerfile: '$(Build.SourcesDirectory)/book-api/Dockerfile'
+        buildContext: '$(Build.SourcesDirectory)'
+        tags: |
+          $(tag)
+          latest
+    - task: Docker@2
+      displayName: Build a comment service image
+      inputs:
+        containerRegistry: $(dockerRegistryServiceConnection)
+        repository: '$(commentServiceImageRepo)'
+        command: buildAndPush
+        Dockerfile: '$(Build.SourcesDirectory)/comment-api/Dockerfile'
+        buildContext: '$(Build.SourcesDirectory)'
+        tags: |
+          $(tag)
+          latest
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Pipeline.Workspace)/s/k8s'
+        artifact: 'manifests'
+        publishLocation: 'pipeline'
+- stage: Deploy
+  displayName: Deploy
+  dependsOn: Build
+  variables:
+    awesomeSecretName: testcontainerregistrymyfirstrg
+  jobs:
+    - job: Deploy_containers_to_AKS
+      displayName: Deploy containers to AKS
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'manifests'
+          targetPath: '$(Pipeline.Workspace)/manifests'
+      - task: KubernetesManifest@0
+        inputs:
+          action: 'createSecret'
+          kubernetesServiceConnection: $(k8sServiceConnection)
+          namespace: 'default'
+          secretType: 'dockerRegistry'
+          secretName: '$(awesomeSecretName)'
+          dockerRegistryEndpoint: $(dockerRegistryEndpoint)
+      - task: KubernetesManifest@0
+        inputs:
+          action: 'deploy'
+          kubernetesServiceConnection: $(k8sServiceConnection)
+          namespace: 'default'
+          manifests: |
+            $(Pipeline.Workspace)/manifests/rabbitmq-depl.yml
+            $(Pipeline.Workspace)/manifests/author-api-mysql-depl.yml
+            $(Pipeline.Workspace)/manifests/book-api-mysql-depl.yml
+            $(Pipeline.Workspace)/manifests/comment-api-mysql-depl.yml
+            $(Pipeline.Workspace)/manifests/ingress-srv-aks.yml
+      - task: KubernetesManifest@0
+        inputs:
+          action: 'deploy'
+          kubernetesServiceConnection: $(k8sServiceConnection)
+          namespace: 'default'
+          containers: |
+            $(dockerRegistryEndpoint).azurecr.io/$(authorServiceImageRepo):$(tag)
+          manifests: |
+            $(Pipeline.Workspace)/manifests/author-api-depl.yml
+      - task: KubernetesManifest@0
+        inputs:
+          action: 'deploy'
+          kubernetesServiceConnection: $(k8sServiceConnection)
+          namespace: 'default'
+          containers: |
+            $(dockerRegistryEndpoint).azurecr.io/$(bookServiceImageRepo):$(tag)
+          manifests: |
+            $(Pipeline.Workspace)/manifests/book-api-depl.yml
+      - task: KubernetesManifest@0
+        inputs:
+          action: 'deploy'
+          kubernetesServiceConnection: $(k8sServiceConnection)
+          namespace: 'default'
+          containers: |
+            $(dockerRegistryEndpoint).azurecr.io/$(commentServiceImageRepo):$(tag)
+          manifests: |
+            $(Pipeline.Workspace)/manifests/comment-api-depl.yml
+
+      

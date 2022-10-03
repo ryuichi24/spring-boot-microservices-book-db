@@ -10,26 +10,26 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /$1$2
 spec:
   rules:
-    http:
-      paths:
-        - path: /author-service/(.*)
-          pathType: Prefix
-          backend:
-            service:
-              name: author-service
-              port:
-                number: 80
-        - path: /book-service/(.*)
-          pathType: Prefix
-          backend:
-            service:
-              name: book-service
-              port:
-                number: 80
-        - path: /comment-service/(.*)
-          pathType: Prefix
-          backend:
-            service:
-              name: comment-service
-              port:
-                number: 80
+    - http:
+        paths:
+          - path: /author-service/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: author-service
+                port:
+                  number: 80
+          - path: /book-service/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: book-service
+                port:
+                  number: 80
+          - path: /comment-service/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: comment-service
+                port:
+                  number: 80
