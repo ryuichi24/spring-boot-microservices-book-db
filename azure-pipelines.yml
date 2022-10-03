@@ -98,7 +98,7 @@ stages:
             $(Pipeline.Workspace)/manifests/author-api-mysql-depl.yml
             $(Pipeline.Workspace)/manifests/book-api-mysql-depl.yml
             $(Pipeline.Workspace)/manifests/comment-api-mysql-depl.yml
-            $(Pipeline.Workspace)/manifests/ingress-srv.yml
+            $(Pipeline.Workspace)/manifests/ingress-srv-aks.yml
       - task: KubernetesManifest@0
         inputs:
           action: 'deploy'
