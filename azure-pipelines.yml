@@ -68,7 +68,7 @@ stages:
   displayName: Deploy
   dependsOn: Build
   variables:
-    awesomesecret: wP22uTGIDzluwuhcGTf6xHEoGE+fIDQK
+    awesomeSecretName: testcontainerregistrymyfirstrg
   jobs:
     - job: Deploy_containers_to_AKS
       displayName: Deploy containers to AKS
@@ -86,7 +86,7 @@ stages:
           kubernetesServiceConnection: $(k8sServiceConnection)
           namespace: 'default'
           secretType: 'dockerRegistry'
-          secretName: '$(awesomesecret)'
+          secretName: '$(awesomeSecretName)'
           dockerRegistryEndpoint: $(dockerRegistryEndpoint)
       - task: KubernetesManifest@0
         inputs:
