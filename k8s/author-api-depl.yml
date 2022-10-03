@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: authorapiservice
-          image: __DOCKER_IMAGE__
+          image: testcontainerregistrymyfirstrg9554fd8774bb485c878d.azurecr.io/authorserviceimagerepo
           env:
             - name: PORT
               value: "80"
