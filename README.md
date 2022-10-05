@@ -1,4 +1,4 @@
-<h1 align="center">Book DB (microservice)</h1>
+<h1 align="center">Book DB (microservices)</h1>
 
 # Architecture
 ![](assets/images/book-db-architecture.png)
