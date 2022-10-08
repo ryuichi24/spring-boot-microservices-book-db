@@ -16,7 +16,7 @@ public class CustomMessage<T> {
     private T payload;
     private LocalDateTime messageDate;
 
-    public void setPayload(T pl) {
-        payload = pl;
+    public void setPayload(T payload) {
+        this.payload = payload;
     }
 }
