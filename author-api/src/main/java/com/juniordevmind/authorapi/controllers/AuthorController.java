@@ -32,11 +32,6 @@ public class AuthorController {
 
     private final AuthorService _authorService;
 
-    @GetMapping("/health")
-    public ResponseEntity<String> healthCheck() {
-        return ResponseEntity.ok("Author API is up and running!");
-    }
-
     @GetMapping("")
     public ResponseEntity<List<AuthorDto>> getAuthors() {
         return ResponseEntity.ok(_authorService.getAuthors());
