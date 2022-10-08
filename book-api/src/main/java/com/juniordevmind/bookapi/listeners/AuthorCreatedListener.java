@@ -1,7 +1,9 @@
 package com.juniordevmind.bookapi.listeners;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
@@ -39,12 +41,16 @@ public class AuthorCreatedListener {
         Author newAuthor = _authorMapper.toEntity(authorEventDto);
         _authorRepository.save(newAuthor);
 
-        List<Book> books = _bookRepository.findAllById(authorEventDto.getBooks());
+        List<UUID> bookIds = authorEventDto.getBooks();
+        if(Objects.isNull(bookIds) || bookIds.size() == 0) {
+            return;
+        }
+
+        List<Book> books = _bookRepository.findAllById(bookIds);
 
         for (Book bookItem : books) {
             if (!bookItem.getAuthors().contains(authorEventDto.getId())) {
                 bookItem.getAuthors().add(authorEventDto.getId());
-                _bookRepository.save(bookItem);
             }
         }
 
