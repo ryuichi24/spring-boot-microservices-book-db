@@ -34,11 +34,6 @@ public class CommentController {
 
     private final CommentService _commentService;
 
-    @GetMapping("/health")
-    public ResponseEntity<String> healthCheck() {
-        return ResponseEntity.ok("Comment API is up and running!");
-    }
-
     @GetMapping("")
     public ResponseEntity<List<Comment>> getComments(@RequestParam UUID book) {
         return ResponseEntity.ok(_commentService.getComments(book));
