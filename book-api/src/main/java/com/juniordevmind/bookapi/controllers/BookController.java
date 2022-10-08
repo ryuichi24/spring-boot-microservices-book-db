@@ -32,11 +32,6 @@ public class BookController {
 
     private final BookService _bookService;
 
-    @GetMapping("/health")
-    public ResponseEntity<String> healthCheck() {
-        return ResponseEntity.ok("Book API is up and running!");
-    }
-
     @GetMapping("")
     public ResponseEntity<List<BookDto>> getBooks() {
         return ResponseEntity.ok(_bookService.getBooks());
